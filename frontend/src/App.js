@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// Import components
+// Import common components
 import Navbar from "./components/common/Navbar";
-import Sidebar from "./components/common/Sidebar";
+import Footer from "./components/common/Footer";
 
+//Import Admin control components
+import Dashboard from "./components/adminpanel/Dashboard";
 
 // Import Theme Context
 import { ThemeProvider } from "./components/context/ThemeContext";
@@ -17,8 +19,17 @@ function App() {
         <Router>
           {/* Navbar */}
           <Navbar />
-          <Sidebar/>
-         
+
+          {/* Main content container */}
+          <div className="container">
+            <Routes>
+              {/* Dashboard (Home) Route */}
+              <Route path="/" element={<Dashboard />} />
+            </Routes>
+          </div>
+
+          {/* Footer Section */}
+          <Footer/>
         </Router>
       </div>
     </ThemeProvider>

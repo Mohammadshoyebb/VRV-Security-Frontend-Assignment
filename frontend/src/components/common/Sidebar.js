@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { FaUsers, FaUserCog, FaUserLock } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
-import { useTheme } from "../context/ThemeContext"; 
+import { useTheme } from "../context/ThemeContext";
 
 // Styled Components
 const SidebarContainer = styled.div`
-  height: 90.1vh;
-  background-color: ${(props) => (props.isDarkMode ? "#2d2d2d" : "#f4f4f4")};
+  height: 84.5vh;
+  background-color: ${(props) => (props.$isDarkMode ? "#2d2d2d" : "#f4f4f4")};
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -29,12 +29,12 @@ const MenuItem = styled.li`
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  color: ${(props) => (props.isDarkMode ? "#fff" : "#333")};
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#333")};
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.isDarkMode ? "#444" : "#ddd")};
-    color: ${(props) => (props.isDarkMode ? "#fff" : "#000")};
+    background-color: ${(props) => (props.$isDarkMode ? "#444" : "#ddd")};
+    color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
   }
 
   & svg {
@@ -44,25 +44,25 @@ const MenuItem = styled.li`
 `;
 
 function Sidebar() {
-  const { isDarkMode } = useTheme(); 
+  const { isDarkMode } = useTheme();
 
   return (
-    <SidebarContainer isDarkMode={isDarkMode}>
+    <SidebarContainer $isDarkMode={isDarkMode}>
       {/* Menu Section */}
       <Menu>
-        <MenuItem isDarkMode={isDarkMode}>
+        <MenuItem $isDarkMode={isDarkMode}>
           <MdDashboard />
           Dashboard
         </MenuItem>
-        <MenuItem isDarkMode={isDarkMode}>
+        <MenuItem $isDarkMode={isDarkMode}>
           <FaUsers />
           Users
         </MenuItem>
-        <MenuItem isDarkMode={isDarkMode}>
+        <MenuItem $isDarkMode={isDarkMode}>
           <FaUserCog />
           Roles
         </MenuItem>
-        <MenuItem isDarkMode={isDarkMode}>
+        <MenuItem $isDarkMode={isDarkMode}>
           <FaUserLock />
           Permissions
         </MenuItem>
