@@ -10,7 +10,6 @@ import Dashboard from "./components/adminpanel/Dashboard";
 
 // Import Theme Context
 import { ThemeProvider } from "./components/context/ThemeContext";
-import AddUser from "./components/adminpanel/manageusers/AddUser";
 import ManageUsers from "./components/adminpanel/manageusers/ManageUsers";
 
 
@@ -25,7 +24,7 @@ function App() {
           {/* Main content container */}
           <div className="container">
             <Routes>
-              {/* Dashboard (Home) Route */}
+              {/* AdminControl Route */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/manageuser" element={<ManageUsers/>}/>
             </Routes>

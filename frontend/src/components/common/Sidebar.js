@@ -44,6 +44,14 @@ const MenuItem = styled.li`
   }
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
 function Sidebar() {
   const { isDarkMode } = useTheme();
 
@@ -52,20 +60,28 @@ function Sidebar() {
       {/* Menu Section */}
       <Menu>
         <MenuItem $isDarkMode={isDarkMode}>
-          <MdDashboard />
-          Dashboard
+          <StyledLink to="/">
+            <MdDashboard />
+            Dashboard
+          </StyledLink>
         </MenuItem>
         <MenuItem $isDarkMode={isDarkMode}>
-          <FaUsers />
-          Users
+          <StyledLink to="/manageuser">
+            <FaUsers />
+            Users
+          </StyledLink>
         </MenuItem>
         <MenuItem $isDarkMode={isDarkMode}>
-          <FaUserCog />
-          Roles
+          <StyledLink to="/roles">
+            <FaUserCog />
+            Roles
+          </StyledLink>
         </MenuItem>
         <MenuItem $isDarkMode={isDarkMode}>
-          <FaUserLock />
-          Permissions
+          <StyledLink to="/permissions">
+            <FaUserLock />
+            Permissions
+          </StyledLink>
         </MenuItem>
       </Menu>
     </SidebarContainer>
