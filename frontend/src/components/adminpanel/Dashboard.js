@@ -50,8 +50,8 @@ const Header = styled.div`
 const Separator = styled.hr`
   border: none;
   height: 2px;
-  background-color: #ddd;
-  margin: 15px 0;
+  background-color:#808b96;
+  margin-bottom:1.5rem;
 `;
 
 const TopBar = styled.div`
@@ -389,7 +389,6 @@ function Dashboard() {
       imageUrl: img4,
     },
   ];
-
   // Filter the users based on the search query
   const filteredUsers = tableData.filter((user) =>
     user.username.toLowerCase().includes(searchQuery.toLowerCase())

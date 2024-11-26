@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { FaUsers, FaUserCog, FaUserLock } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
+import { Link } from "react-router-dom"; 
 
 // Styled Components
 const SidebarContainer = styled.div`

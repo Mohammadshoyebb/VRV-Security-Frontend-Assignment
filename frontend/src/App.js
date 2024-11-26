@@ -27,7 +27,7 @@ function App() {
             <Routes>
               {/* Dashboard (Home) Route */}
               <Route path="/" element={<Dashboard />} />
-              <Route path="/adduser" element={<ManageUsers/>}/>
+              <Route path="/manageuser" element={<ManageUsers/>}/>
             </Routes>
           </div>
 

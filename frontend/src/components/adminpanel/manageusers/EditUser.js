@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useTheme } from "../../context/ThemeContext";
 
-// Styled Components for Modal
+// Styled Components for Modal (same as AddUserModal)
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -61,7 +61,7 @@ const InputField = styled.input`
   border: 1px solid ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-  width: calc(100% - 40px);
+  width: calc(100% - 40px); /* Consistent margin-based width */
 `;
 
 const SelectField = styled.select`
@@ -70,14 +70,13 @@ const SelectField = styled.select`
   border: 1px solid ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-  width: calc(100% - 20px);
+  width: calc(100% - 20px); /* Consistent margin-based width */
 `;
 
 const CheckboxContainer = styled.div`
   display: flex;
   gap: 10px;
   margin: 0;
-  
 `;
 
 const CheckboxLabel = styled.label`
@@ -85,6 +84,7 @@ const CheckboxLabel = styled.label`
   align-items: center;
   gap: 5px;
   font-size: 14px;
+  color: ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
 `;
 
 const Button = styled.button`
@@ -94,7 +94,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: calc(100% - 40px); 
+  width: calc(100% - 40px); /* Consistent margin-based width */
   margin: 0 auto;
   font-size: 15px;
   font-weight: bold;
@@ -124,7 +124,7 @@ const ErrorMessage = styled.div`
   font-size: 14px;
 `;
 
-function AddUser({ isOpen, onClose, onSave }) {
+function EditUser({ isOpen, onClose, userData, onSave }) {
   const { isDarkMode } = useTheme();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -136,6 +136,16 @@ function AddUser({ isOpen, onClose, onSave }) {
   });
   const [error, setError] = useState("");
 
+  // Pre-fill fields with existing user data when modal opens
+  useEffect(() => {
+    if (userData) {
+      setUsername(userData.username || "");
+      setEmail(userData.email || "");
+      setRole(userData.role || "");
+      setPermissions(userData.permissions || { read: false, write: false, delete: false });
+    }
+  }, [userData]);
+
   const handlePermissionChange = (e) => {
     const { name, checked } = e.target;
     setPermissions((prevPermissions) => ({
@@ -144,7 +154,7 @@ function AddUser({ isOpen, onClose, onSave }) {
     }));
   };
 
-  // Validation rules
+  // Validation Rules
   const validateFields = () => {
     if (!username.trim()) {
       setError("Name cannot be empty.");
@@ -163,7 +173,7 @@ function AddUser({ isOpen, onClose, onSave }) {
       return false;
     }
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setError("Enter a valid email (e.g., janhvi23@gmail.com).");
+      setError("Enter a valid email (e.g., user@example.com).");
       return false;
     }
     if (!role) {
@@ -178,21 +188,11 @@ function AddUser({ isOpen, onClose, onSave }) {
     return true;
   };
 
-  const handleAddUser = (e) => {
+  const handleEditUser = (e) => {
     e.preventDefault();
     if (validateFields()) {
-      const newUser = {
-        id: Date.now(),
-        username,
-        email,
-        status: "Active", // Default status
-        imageUrl: "path_to_default_avatar", // Default image URL
-      };
-      onSave(newUser);
-      setUsername("");
-      setEmail("");
-      setRole("");
-      setPermissions("false");
+      onSave({ username, email, role, permissions }); // Save updated user data
+      alert("User details updated successfully!");
       onClose();
     }
   };
@@ -205,15 +205,14 @@ function AddUser({ isOpen, onClose, onSave }) {
         <CloseButton $isDarkMode={isDarkMode} onClick={onClose}>
           &times;
         </CloseButton>
-        <ModalHeader>Add New User</ModalHeader>
+        <ModalHeader>Edit User</ModalHeader>
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <FormContainer onSubmit={handleAddUser}>
+        <FormContainer onSubmit={handleEditUser}>
           <FormField>
             <Label $isDarkMode={isDarkMode}>Name:</Label>
             <InputField
               $isDarkMode={isDarkMode}
               type="text"
-              placeholder="e.g. Janhvi Pandey"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -223,7 +222,6 @@ function AddUser({ isOpen, onClose, onSave }) {
             <InputField
               $isDarkMode={isDarkMode}
               type="email"
-              placeholder="e.g. shivipandey993@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -276,11 +274,11 @@ function AddUser({ isOpen, onClose, onSave }) {
               </CheckboxLabel>
             </CheckboxContainer>
           </FormField>
-          <Button type="submit">Add User</Button>
+          <Button type="submit">Save Changes</Button>
         </FormContainer>
       </ModalContainer>
     </ModalBackground>
   );
 }
 
-export default AddUser;
+export default EditUser;
