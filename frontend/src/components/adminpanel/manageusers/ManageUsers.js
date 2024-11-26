@@ -18,6 +18,7 @@ import img2 from "../../../media/avatars/Avatar2.png";
 import img3 from "../../../media/avatars/Avatar3.png";
 import img4 from "../../../media/avatars/Avatar4.png";
 import defaultImg from "../../../media/avatars/default.jpg";
+
 // Styled Components
 const ManageUsersContainer = styled.div`
   display: flex;
@@ -96,7 +97,6 @@ const SearchContainer = styled.div`
     flex: 1;
   }
 `;
-
 
 const TableContainer = styled.div`
   margin-top: 20px;
@@ -187,9 +187,11 @@ font-size:15px;
 const EditIcon = styled(FaRegEdit)`
   font-size: 16px;
 `;
+
 const DeleteIcon=styled(MdOutlineDelete)`
   font-size: 16px;
 `;
+
 const AddIcon = styled(IoMdAdd)`
   font-size: 16px;
   margin-right: 6px; 
@@ -210,7 +212,6 @@ const AddNewUserWrapper = styled.div`
   }
 `;
 
-
 const StatusToggleButton = styled.div`
   display: flex;
   align-items: center;
@@ -222,15 +223,16 @@ const StatusToggleButton = styled.div`
   `}
 `;
 
-
 const ActiveIconContainer=styled.div`
 font-size:20px;
 color: #28a745;
 `;
+
 const InactiveIconContainer=styled.div`
 font-size:20px;
 color: #dc3545;
 `;
+
 const ErrorMessage = styled.div`
 width:100%;
   text-align: center;
@@ -422,8 +424,8 @@ const ManageUsers = () => {
          <EditUserModal
          isOpen={modalState.isOpen}
          onClose={() => setModalState({ isOpen: false, isEditMode: false, userToEdit: null })}
-         userData={modalState.userToEdit} // Pass the user to edit here
-         onSave={handleUpdateUser} // Handle the save
+         userData={modalState.userToEdit} 
+         onSave={handleUpdateUser} 
        />
        
         ) : (

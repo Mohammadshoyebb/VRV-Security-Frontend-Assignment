@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useTheme } from "../../context/ThemeContext";
 import PropTypes from "prop-types";
 
-// Reuse the styled components from AddUser
+//Styled Components
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -151,6 +151,7 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
     setPermissions((prev) => ({ ...prev, [name]: checked }));
   };
 
+//Validation Rules
   const validateFields = () => {
     if (!username.trim()) {
       setError("Name cannot be empty.");

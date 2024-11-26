@@ -57,7 +57,7 @@ function Sidebar() {
 
   return (
     <SidebarContainer $isDarkMode={isDarkMode}>
-      {/* Menu Section */}
+     
       <Menu>
         <MenuItem $isDarkMode={isDarkMode}>
           <StyledLink to="/">
