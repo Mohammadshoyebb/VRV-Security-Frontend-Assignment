@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Import components
 import Navbar from "./components/common/Navbar";
-
+import Sidebar from "./components/common/Sidebar";
 
 
 // Import Theme Context
 import { ThemeProvider } from "./components/context/ThemeContext";
+
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
         <Router>
           {/* Navbar */}
           <Navbar />
-
+          <Sidebar/>
          
         </Router>
       </div>
