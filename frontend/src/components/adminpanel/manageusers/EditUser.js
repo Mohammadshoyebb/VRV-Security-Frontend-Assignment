@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useTheme } from "../../context/ThemeContext";
+import PropTypes from "prop-types";
 
-// Styled Components for Modal (same as AddUserModal)
+// Reuse the styled components from AddUser
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -61,7 +62,7 @@ const InputField = styled.input`
   border: 1px solid ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-  width: calc(100% - 40px); /* Consistent margin-based width */
+  width: calc(100% - 40px);
 `;
 
 const SelectField = styled.select`
@@ -70,7 +71,7 @@ const SelectField = styled.select`
   border: 1px solid ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-  width: calc(100% - 20px); /* Consistent margin-based width */
+  width: calc(100% - 20px);
 `;
 
 const CheckboxContainer = styled.div`
@@ -84,7 +85,6 @@ const CheckboxLabel = styled.label`
   align-items: center;
   gap: 5px;
   font-size: 14px;
-  color: ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
 `;
 
 const Button = styled.button`
@@ -94,7 +94,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: calc(100% - 40px); /* Consistent margin-based width */
+  width: calc(100% - 40px); 
   margin: 0 auto;
   font-size: 15px;
   font-weight: bold;
@@ -126,17 +126,16 @@ const ErrorMessage = styled.div`
 
 function EditUser({ isOpen, onClose, userData, onSave }) {
   const { isDarkMode } = useTheme();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
-  const [permissions, setPermissions] = useState({
+  const [username, setUsername] = useState(userData?.username || "");
+  const [email, setEmail] = useState(userData?.email || "");
+  const [role, setRole] = useState(userData?.role || "");
+  const [permissions, setPermissions] = useState(userData?.permissions || {
     read: false,
     write: false,
     delete: false,
   });
   const [error, setError] = useState("");
 
-  // Pre-fill fields with existing user data when modal opens
   useEffect(() => {
     if (userData) {
       setUsername(userData.username || "");
@@ -145,16 +144,13 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
       setPermissions(userData.permissions || { read: false, write: false, delete: false });
     }
   }, [userData]);
+  
 
   const handlePermissionChange = (e) => {
     const { name, checked } = e.target;
-    setPermissions((prevPermissions) => ({
-      ...prevPermissions,
-      [name]: checked,
-    }));
+    setPermissions((prev) => ({ ...prev, [name]: checked }));
   };
 
-  // Validation Rules
   const validateFields = () => {
     if (!username.trim()) {
       setError("Name cannot be empty.");
@@ -164,16 +160,8 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
       setError("Name should contain only letters and spaces.");
       return false;
     }
-    if (username.length < 4) {
-      setError("Name should consist of 4 or more characters.");
-      return false;
-    }
-    if (!email.trim()) {
-      setError("Email cannot be empty.");
-      return false;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setError("Enter a valid email (e.g., user@example.com).");
+    if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) {
+      setError("Enter a valid email.");
       return false;
     }
     if (!role) {
@@ -191,8 +179,7 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
   const handleEditUser = (e) => {
     e.preventDefault();
     if (validateFields()) {
-      onSave({ username, email, role, permissions }); // Save updated user data
-      alert("User details updated successfully!");
+      onSave({ ...userData, username, email, role, permissions });
       onClose();
     }
   };
@@ -280,5 +267,12 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
     </ModalBackground>
   );
 }
+
+EditUser.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  userData: PropTypes.object,
+  onSave: PropTypes.func.isRequired,
+};
 
 export default EditUser;

@@ -2,13 +2,14 @@ import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
-import { IoSearchOutline} from "react-icons/io5"; 
+import { IoSearchOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
-import { RiToggleLine,RiToggleFill } from "react-icons/ri";
+import { RiToggleLine, RiToggleFill } from "react-icons/ri";
 import { useTheme } from "../../context/ThemeContext";
 
 // Importing components
-import AddUserModal from "../manageusers/AddUser"; 
+import AddUserModal from "../manageusers/AddUser";
+import EditUserModal from "../manageusers/EditUser";
 import Sidebar from "../../common/Sidebar";
 
 // Importing images
@@ -17,7 +18,6 @@ import img2 from "../../../media/avatars/Avatar2.png";
 import img3 from "../../../media/avatars/Avatar3.png";
 import img4 from "../../../media/avatars/Avatar4.png";
 import defaultImg from "../../../media/avatars/default.jpg";
-
 // Styled Components
 const ManageUsersContainer = styled.div`
   display: flex;
@@ -250,40 +250,65 @@ const ManageUsers = () => {
     { id: 3, username: "Ishaan Kumar", email: "ishaankumar@example.com", imageUrl: img3, status: "Active" },
     { id: 4, username: "Rohan Patel", email: "rohanpatel@example.com", imageUrl: img4, status: "Inactive" },
   ]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    isEditMode: false,
+    userToEdit: null,
+  });
 
-  
+  // Filter users based on search query
   const filteredUsers = useMemo(
     () =>
-      users.filter(
-        (user) =>
-          user.username.toLowerCase().includes(searchQuery.toLowerCase()) 
+      users.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase())
       ),
     [searchQuery, users]
   );
 
+  // Add a new user
   const handleAddUser = (newUser) => {
     const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
     const userWithDefaultImage = {
       ...newUser,
       id: newUserId,
       imageUrl: defaultImg,
-      status: "Active", 
+      status: "Active",
     };
     setUsers((prevUsers) => [...prevUsers, userWithDefaultImage]);
-    setIsModalOpen(false);
+    setModalState({ isOpen: false, isEditMode: false, userToEdit: null });
   };
 
+  // Toggle user status
   const handleToggleStatus = (id) => {
-    const updatedUsers = users.map((user) =>
-      user.id === id ? { ...user, status: user.status === "Active" ? "Inactive" : "Active" } : user
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === id
+          ? { ...user, status: user.status === "Active" ? "Inactive" : "Active" }
+          : user
+      )
     );
-    setUsers(updatedUsers);
   };
 
+  // Edit an existing user
+  const handleEditUser = (user) => {
+    setModalState({ isOpen: true, isEditMode: true, userToEdit: user });
+  };
+
+  // Update an existing user
+  const handleUpdateUser = (updatedUser) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === updatedUser.id ? updatedUser : user
+      )
+    );
+    setModalState({ isOpen: false, isEditMode: false, userToEdit: null });
+  };
+
+  // Delete a user with confirmation
   const handleDeleteUser = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+    }
   };
 
   return (
@@ -297,96 +322,117 @@ const ManageUsers = () => {
         <TopBar>
           <SectionHeading>User List</SectionHeading>
           <TopBarRight>
-          <SearchContainer $isDarkMode={isDarkMode}>
-            <IoSearchOutline />
-            <input
-              type="text"
-              placeholder="Search User..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </SearchContainer>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            style={{
-              backgroundColor: "#28a745",
-              color: "white",
-              padding: "6px 12px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-                  <AddNewUserWrapper>
-        <AddIcon />
-        Add New User
-      </AddNewUserWrapper>
-
-          </button></TopBarRight>
+            <SearchContainer $isDarkMode={isDarkMode}>
+              <IoSearchOutline />
+              <input
+                type="text"
+                placeholder="Search User..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </SearchContainer>
+            <button
+              onClick={() => setModalState({ isOpen: true, isEditMode: false })}
+              style={{
+                backgroundColor: "#28a745",
+                color: "white",
+                padding: "6px 12px",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              <AddNewUserWrapper>
+                <AddIcon />
+                Add New User
+              </AddNewUserWrapper>
+            </button>
+          </TopBarRight>
         </TopBar>
-        
-       
-        {/* Show error message if no users match */}
-        {filteredUsers.length === 0 && searchQuery !== "" && (
+
+        {filteredUsers.length === 0 && searchQuery !== "" ? (
           <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
-        )}
-
-        {filteredUsers.length > 0 && (
-          <TableContainer  $isDarkMode={isDarkMode}>
-            
-          <Table>
-            <TableHead>
-              <tr> 
-                <th>Id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </TableHead>
-            <TableBody $isDarkMode={isDarkMode}>
-                
-
-              {filteredUsers.map((user) => (
-                <tr key={user.id}>
-                    <td>{user.id}</td>
-                  <td>
-                    <AvatarUsernameWrapper>
-                      <Avatar src={user.imageUrl} alt="avatar" />
-                      {user.username}
-                    </AvatarUsernameWrapper>
-                  </td>
-                  <td>{user.email}</td>
-                  <td>
-                  <StatusToggleButton $status={user.status} onClick={() => handleToggleStatus(user.id)}>
-
-                      {user.status === "Active" ? (
-                        <>
-                         <ActiveIconContainer> <RiToggleFill /></ActiveIconContainer>
-                          Active
-                        </>
-                      ) : (
-                        <>
-                          <InactiveIconContainer> <RiToggleLine /></InactiveIconContainer>
-                          Inactive
-                        </>
-                      )}
-                    </StatusToggleButton>
-                  </td>
-                  <td>
-                    <ActionButton onClick={() => alert("Edit user")}> <ActionIcon>< EditIcon />Edit</ActionIcon></ActionButton>
-                    <DeleteButton onClick={() => handleDeleteUser(user.id)}> <ActionIcon><DeleteIcon/> Delete</ActionIcon></DeleteButton>
-                  </td>
+        ) : (
+          <TableContainer $isDarkMode={isDarkMode}>
+            <Table>
+              <TableHead>
+                <tr>
+                  <th>Id</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody $isDarkMode={isDarkMode}>
+                {filteredUsers.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>
+                      <AvatarUsernameWrapper>
+                        <Avatar src={user.imageUrl} alt="avatar" />
+                        {user.username}
+                      </AvatarUsernameWrapper>
+                    </td>
+                    <td>{user.email}</td>
+                    <td>
+                      <StatusToggleButton
+                        $status={user.status}
+                        onClick={() => handleToggleStatus(user.id)}
+                      >
+                        {user.status === "Active" ? (
+                          <>
+                            <ActiveIconContainer>
+                              <RiToggleFill />
+                            </ActiveIconContainer>
+                            Active
+                          </>
+                        ) : (
+                          <>
+                            <InactiveIconContainer>
+                              <RiToggleLine />
+                            </InactiveIconContainer>
+                            Inactive
+                          </>
+                        )}
+                      </StatusToggleButton>
+                    </td>
+                    <td>
+                      <ActionButton onClick={() => handleEditUser(user)}>
+                        <ActionIcon>
+                          <EditIcon />
+                          Edit
+                        </ActionIcon>
+                      </ActionButton>
+                      <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                        <ActionIcon>
+                          <DeleteIcon />
+                          Delete
+                        </ActionIcon>
+                      </DeleteButton>
+                    </td>
+                  </tr>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
-        <AddUserModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onSave={handleAddUser}
-        />
+
+        {/* Modals */}
+        {modalState.isEditMode ? (
+         <EditUserModal
+         isOpen={modalState.isOpen}
+         onClose={() => setModalState({ isOpen: false, isEditMode: false, userToEdit: null })}
+         userData={modalState.userToEdit} // Pass the user to edit here
+         onSave={handleUpdateUser} // Handle the save
+       />
+       
+        ) : (
+          <AddUserModal
+            isOpen={modalState.isOpen}
+            onClose={() => setModalState({ isOpen: false })}
+            onSave={handleAddUser}
+          />
+        )}
       </MainContent>
     </ManageUsersContainer>
   );
