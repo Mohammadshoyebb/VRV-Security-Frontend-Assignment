@@ -5,7 +5,7 @@ import { useTheme } from "../context/ThemeContext";
 const FooterContainer = styled.footer`
   height: 5.8vh;
   padding:0.5rem;
-  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#f9f9f9")};
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
   display: flex;
   align-items: center;
