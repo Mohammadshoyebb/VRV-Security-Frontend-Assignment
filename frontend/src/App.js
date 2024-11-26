@@ -8,6 +8,7 @@ import Footer from "./components/common/Footer";
 //Import Admin control components
 import Dashboard from "./components/adminpanel/Dashboard";
 import ManageUsers from "./components/adminpanel/manageusers/ManageUsers";
+import ManageRole from "./components/adminpanel/manageroles/ManageRole";
 
 // Import Theme Context
 import { ThemeProvider } from "./components/context/ThemeContext";
@@ -27,6 +28,8 @@ function App() {
               {/* AdminControl Routes */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/manageuser" element={<ManageUsers/>}/>
+              <Route path="/managerole" element={<ManageRole/>}/>
+              
             </Routes>
           </div>
 

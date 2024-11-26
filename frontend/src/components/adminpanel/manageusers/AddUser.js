@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useTheme } from "../../context/ThemeContext";
 
-// Styled Components for Modal
+// Styled Components 
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
