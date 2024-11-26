@@ -147,6 +147,7 @@ function AddUserModal({ isOpen, onClose }) {
     }));
   };
 
+  //Validation Rules
   const validateFields = () => {
     if (!username.trim()) {
       setError("Name cannot be empty.");
@@ -156,7 +157,7 @@ function AddUserModal({ isOpen, onClose }) {
       setError("Name should contain only letters and spaces.");
       return false;
     }
-    if(username.length<=4){
+    if(username.length<4){
         setError("Name should consist equal or more than 4 characters.");
       return false;
     }
