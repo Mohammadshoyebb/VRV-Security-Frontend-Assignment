@@ -36,26 +36,29 @@ To run the project, follow these steps:
 
 1. Clone the Project
    First, clone the repository to your local machine:
-
+```bash
 git clone https://github.com/janhvi-pandey/VRV-Security-Frontend-Assignment.git
+```
 
 2. Navigate to the Project Folder
    Move into the project directory:
-
+```bash
 cd frontend/
+```
 
 3. Install Dependencies
    Install all the required dependencies:
 
-bash
-Copy code
+```bash
 npm install
+```
 
 
 4. Start the Application
    Run the command:
-
+```bash
 npm start
+```
 
 This will start the app on http://localhost:3000. You should be able to access the application in your browser.
 
@@ -63,8 +66,8 @@ This will start the app on http://localhost:3000. You should be able to access t
 
 If you encounter any issues or need further clarification, feel free to contact me at:
 
-Email: shivipandey993@gmail.com
-Portfolio: janhvi-portfolio.web.app
+- Email: shivipandey993@gmail.com
+- Phone: +91 6307976482
 
 
 
