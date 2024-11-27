@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FaUsers, FaUserCog, FaUserLock } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 // Styled Components for small screen sidebar
 const SidebarContainer = styled.div`
@@ -18,7 +18,6 @@ const SidebarContainer = styled.div`
   left: 0;
   bottom: 0;
   width: 250px;
-  z-index: 999;
   padding: 20px;
   transform: translateX(0);
 `;
@@ -67,7 +66,6 @@ const HamburgerIcon = styled.div`
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#333")};
   padding: 20px;
   margin-top: 10px;
-  z-index: 1000;
 
   @media (min-width: 769px) {
     display: none; /* Hide on large screens */

@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { FaRegBell } from "react-icons/fa";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
-import SignInModal from "../authentication/SignIn"; 
-import SignUpModal from "../authentication/SignUp"; 
-
+import SignInModal from "../authentication/SignIn";
+import SignUpModal from "../authentication/SignUp";
 
 // Styled Components
 const NavbarContainer = styled.div.withConfig({
@@ -43,7 +42,7 @@ const ButtonContainer = styled.div`
   gap: 15px;
 
   @media (max-width: 768px) {
-    display: none;  // Hide on small screens, menu will be toggled by hamburger
+    display: none;
   }
 `;
 
@@ -80,10 +79,10 @@ const HamburgerMenu = styled.div`
   height: 24px;
   width: 30px;
   cursor: pointer;
-  
+  color: ${(props) => (props.$isDarkMode ? "#000" : "#fff")};
 
   @media (max-width: 768px) {
-    display: flex;  // Show hamburger icon on small screens
+    display: flex;
   }
 `;
 
@@ -101,7 +100,6 @@ const MobileMenu = styled.div`
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
   display: ${(props) => (props.show ? "flex" : "none")};
   flex-direction: column;
-  // align-items: center;
   padding: 1rem;
   gap: 10px;
 
@@ -111,6 +109,7 @@ const MobileMenu = styled.div`
     right: 0;
     width: 100%;
     background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
+    color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
     display: ${(props) => (props.show ? "flex" : "none")};
     flex-direction: column;
     align-items: center;
@@ -143,12 +142,16 @@ function Navbar() {
         <Heading>VRV Security</Heading>
         <ButtonContainer>
           {/* Toggle Mode */}
-          <ToggleButton onClick={toggleDarkMode} aria-label="Toggle Dark Mode">
+          <ToggleButton
+            $isDarkMode={isDarkMode}
+            onClick={toggleDarkMode}
+            aria-label="Toggle Dark Mode"
+          >
             {isDarkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
           </ToggleButton>
 
           {/* Notification Button */}
-          <IconButton aria-label="Notifications">
+          <IconButton $isDarkMode={isDarkMode} aria-label="Notifications">
             <FaRegBell />
           </IconButton>
 
@@ -186,14 +189,8 @@ function Navbar() {
       </MobileMenu>
 
       {/* Modals */}
-      <SignInModal 
-        show={showSignInModal} 
-        closeSignInModal={closeSignInModal} 
-      />
-      <SignUpModal 
-        show={showSignUpModal} 
-        closeSignUpModal={closeSignUpModal} 
-      />
+      <SignInModal show={showSignInModal} closeSignInModal={closeSignInModal} />
+      <SignUpModal show={showSignUpModal} closeSignUpModal={closeSignUpModal} />
     </>
   );
 }
