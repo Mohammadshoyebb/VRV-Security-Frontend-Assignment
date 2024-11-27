@@ -217,17 +217,19 @@ const Permission = () => {
               ...user,
               permissions: checked
                 ? [...(user.permissions || []), permission]
-                : user.permissions.filter((p) => p !== permission),
+                : (user.permissions || []).filter((p) => p !== permission),
             }
           : user
       )
     );
   };
+  
 
   const handleAddPermission = (newPermission) => {
     setPermissions((prevPermissions) => [...prevPermissions, newPermission]);
-    setModalState({ isOpen: false, isEditMode: false, permissionToEdit: null });
+    setModalState({ isOpen: false });
   };
+  
 
   const handleDeleteUser = (userId) => {
     setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
@@ -278,6 +280,7 @@ const Permission = () => {
             <Table>
               <TableHead>
                 <tr>
+                  <th>Id</th>
                   <th>User</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -288,6 +291,7 @@ const Permission = () => {
               <TableBody $isDarkMode={isDarkMode}>
                 {filteredUsers.map((user) => (
                   <tr key={user.id}>
+                    <td>{user.id}</td>
                     <td>
                       <AvatarUsernameWrapper>
                         <Avatar src={user.imageUrl} />
@@ -297,19 +301,22 @@ const Permission = () => {
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
-                      {permissions.map((permission) => (
-                        <div key={permission.id}>
-                          <input
-                            type="checkbox"
-                            checked={user.permissions?.includes(permission.permission)}
-                            onChange={(e) =>
-                              handlePermissionChange(user.id, permission.permission, e.target.checked)
-                            }
-                          />
-                          {permission.permission}
-                        </div>
-                      ))}
-                    </td>
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+    {permissions.map((permission) => (
+      <label key={permission.id}>
+        <input
+          type="checkbox"
+          checked={user.permissions?.includes(permission.permission)}
+          onChange={(e) =>
+            handlePermissionChange(user.id, permission.permission, e.target.checked)
+          }
+        />
+        {permission.permission}
+      </label>
+    ))}
+  </div>
+</td>
+
                     <td>
                       <DeleteButton onClick={() => handleDeleteUser(user.id)}>
                         <MdOutlineDelete/>
@@ -328,7 +335,7 @@ const Permission = () => {
           <AddPermissionModal
             isOpen={modalState.isOpen}
             onClose={() => setModalState({ ...modalState, isOpen: false })}
-            onAddPermission={handleAddPermission}
+            onSave={handleAddPermission}
           />
         )}
       </MainContent>
