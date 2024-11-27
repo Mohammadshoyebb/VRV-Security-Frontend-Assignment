@@ -3,9 +3,14 @@ import styled from "styled-components";
 import { MdOutlineDelete } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
+
+//Importing ThemeContext
 import { useTheme } from "../../context/ThemeContext";
+
+//Importing components
 import Sidebar from "../../common/Sidebar";
 import AddRoleModal from "../manageroles/AddRole";
+import SmallscreenSidebar from "../../common/SmallscreenSidebar";
 
 // Importing images for user avatars
 import img1 from "../../../media/avatars/Avatar1.png";
@@ -212,6 +217,8 @@ const PageButton = styled.button`
   }
 `;
 
+// Styled components specific to small screens
+
 const SmallScreenContainer = styled.div`
   @media (max-width: 768px) {
     min-height: 77.5vh;
@@ -221,6 +228,16 @@ const SmallScreenContainer = styled.div`
     background-color: ${(props) => (props.$isDarkMode ? "#1a1a1a" : "#f9f9f9")};
   }
   display: none;
+`;
+
+const Container = styled.div`
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom:0;
+  }
 `;
 
 const UserCard = styled.div`
@@ -537,10 +554,13 @@ const ManageRoles = () => {
       </ManageRolesContainer>
 
       {/* SmallScreen Layout */}
-      
+
       <SmallScreenContainer $isDarkMode={isDarkMode}>
         <SmallScreenCardContainer $isDarkMode={isDarkMode}>
-          <Header $isDarkMode={isDarkMode}>Manage Roles</Header>
+          <Container $isDarkMode={isDarkMode}>
+            <h1>Manage Roles</h1>
+            <SmallscreenSidebar />
+          </Container>
 
           <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
           <SearchContainer $isDarkMode={isDarkMode}>

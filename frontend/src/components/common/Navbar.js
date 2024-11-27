@@ -6,6 +6,7 @@ import { useTheme } from "../context/ThemeContext";
 import SignInModal from "../authentication/SignIn"; 
 import SignUpModal from "../authentication/SignUp"; 
 
+
 // Styled Components
 const NavbarContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => prop !== "isDarkMode",
@@ -19,6 +20,10 @@ const NavbarContainer = styled.div.withConfig({
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 10px 15px;
+  }
 `;
 
 const Heading = styled.div`
@@ -26,12 +31,20 @@ const Heading = styled.div`
   font-weight: bold;
   font-family: Calibri;
   color: #2e86c1;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
+
+  @media (max-width: 768px) {
+    display: none;  // Hide on small screens, menu will be toggled by hamburger
+  }
 `;
 
 const ToggleButton = styled.button`
@@ -60,8 +73,55 @@ const AuthButton = styled.button`
   background-color: ${(props) => (props.$isDarkMode ? "#fff" : "#333")};
 `;
 
+const HamburgerMenu = styled.div`
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 24px;
+  width: 30px;
+  cursor: pointer;
+  
+
+  @media (max-width: 768px) {
+    display: flex;  // Show hamburger icon on small screens
+  }
+`;
+
+const Line = styled.div`
+  height: 3px;
+  width: 100%;
+  background-color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const MobileMenu = styled.div`
+  position: absolute;
+  top: 7vh;
+  right: 0;
+  width: 100%;
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
+  display: ${(props) => (props.show ? "flex" : "none")};
+  flex-direction: column;
+  // align-items: center;
+  padding: 1rem;
+  gap: 10px;
+
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 7vh;
+    right: 0;
+    width: 100%;
+    background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
+    display: ${(props) => (props.show ? "flex" : "none")};
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 10px;
+  }
+`;
+
 function Navbar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const [showMenu, setShowMenu] = useState(false);
 
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
@@ -73,13 +133,15 @@ function Navbar() {
   const openSignUpModal = () => setShowSignUpModal(true);
   const closeSignUpModal = () => setShowSignUpModal(false);
 
+  // Toggle the mobile menu
+  const toggleMenu = () => setShowMenu(!showMenu);
+
   return (
     <>
       {/* Navbar Component */}
       <NavbarContainer $isDarkMode={isDarkMode}>
         <Heading>VRV Security</Heading>
         <ButtonContainer>
-
           {/* Toggle Mode */}
           <ToggleButton onClick={toggleDarkMode} aria-label="Toggle Dark Mode">
             {isDarkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
@@ -98,7 +160,30 @@ function Navbar() {
             SignUp
           </AuthButton>
         </ButtonContainer>
+
+        {/* Hamburger Icon */}
+        <HamburgerMenu onClick={toggleMenu}>
+          <Line $isDarkMode={isDarkMode} />
+          <Line $isDarkMode={isDarkMode} />
+          <Line $isDarkMode={isDarkMode} />
+        </HamburgerMenu>
       </NavbarContainer>
+
+      {/* Mobile Menu */}
+      <MobileMenu $isDarkMode={isDarkMode} show={showMenu}>
+        <ToggleButton onClick={toggleDarkMode} aria-label="Toggle Dark Mode">
+          {isDarkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
+        </ToggleButton>
+        <IconButton aria-label="Notifications">
+          <FaRegBell />
+        </IconButton>
+        <AuthButton $isDarkMode={isDarkMode} onClick={openSignInModal}>
+          SignIn
+        </AuthButton>
+        <AuthButton $isDarkMode={isDarkMode} onClick={openSignUpModal}>
+          SignUp
+        </AuthButton>
+      </MobileMenu>
 
       {/* Modals */}
       <SignInModal 

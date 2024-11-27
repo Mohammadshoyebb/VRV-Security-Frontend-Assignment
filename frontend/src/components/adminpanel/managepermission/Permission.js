@@ -7,6 +7,7 @@ import { useTheme } from "../../context/ThemeContext";
 
 import AddPermissionModal from "../managepermission/AddPermission";
 import Sidebar from "../../common/Sidebar";
+import SmallscreenSidebar from "../../common/SmallscreenSidebar";
 
 // Importing images for user avatars
 import img1 from "../../../media/avatars/Avatar1.png";
@@ -245,6 +246,8 @@ const UserAvatar = styled.img`
   object-fit: cover;
 `;
 
+// Styled components specific to small screens
+
 const SmallScreenCardContainer = styled.div`
   @media (max-width: 768px) {
     display: flex;
@@ -253,6 +256,17 @@ const SmallScreenCardContainer = styled.div`
     gap: 20px;
   }
 `;
+
+const Container = styled.div`
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom:0;
+  }
+`;
+
 const CardContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -278,6 +292,7 @@ const CardRole = styled.p`
   font-size: 15px;
   color: ${(props) => (props.$isDarkMode ? "#f2f3f4 " : "#555")};
 `;
+
 const CardLowerWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -594,7 +609,10 @@ const Permission = () => {
 
       <SmallScreenContainer $isDarkMode={isDarkMode}>
         <SmallScreenCardContainer $isDarkMode={isDarkMode}>
-          <Header $isDarkMode={isDarkMode}>Manage Permissions</Header>
+          <Container $isDarkMode={isDarkMode}>
+            <h1>Manage Permissions</h1>
+            <SmallscreenSidebar />
+          </Container>
 
           <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
           <SearchContainer $isDarkMode={isDarkMode}>
@@ -639,8 +657,8 @@ const Permission = () => {
                   <div
                     style={{
                       display: "flex",
-                      flexWrap: "wrap", 
-                      gap: "10px", 
+                      flexWrap: "wrap",
+                      gap: "10px",
                       color: isDarkMode ? "white" : "black",
                     }}
                   >

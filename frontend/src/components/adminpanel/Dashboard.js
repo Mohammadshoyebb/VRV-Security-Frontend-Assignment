@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Sidebar from "../common/Sidebar";
-import { useTheme } from "../context/ThemeContext";
 import { IoSearchOutline } from "react-icons/io5";
+
+//Importing ThemeContext
+import { useTheme } from "../context/ThemeContext";
+
+//Importing components
+import Sidebar from "../common/Sidebar";
+import SmallscreenSidebar from "../common/SmallscreenSidebar";
 
 // Importing images
 import img1 from "../../media/avatars/Avatar1.png";
@@ -66,7 +71,6 @@ const SectionHeading = styled.h2`
   font-size: 20px;
   margin: 0;
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-  
 `;
 
 const SearchContainer = styled.div`
@@ -80,8 +84,7 @@ const SearchContainer = styled.div`
       : "#fff"}; /* Background color based on dark mode */
   padding: 5px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
 
   input {
     border: none;
@@ -195,12 +198,22 @@ const ErrorMessage = styled.div`
 
 const SmallScreenDashboard = styled.div`
   @media (max-width: 768px) {
-  min-height: 77.5vh;
+    min-height: 77.5vh;
     display: block;
     padding: 20px;
     background-color: ${(props) => (props.$isDarkMode ? "#1a1a1a" : "#f9f9f9")};
   }
   display: none;
+`;
+
+const Container = styled.div`
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom:0;
+  }
 `;
 
 const UserCard = styled.div`
@@ -219,7 +232,7 @@ const UserMeta = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
-  // color:${(props)=>(props.$isDarkMode?"#fff":"#000")};
+  // color:${(props) => (props.$isDarkMode ? "#fff" : "#000")};
 `;
 
 const MetaData = styled.div`
@@ -227,7 +240,7 @@ const MetaData = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   gap: 5px;
-  color:${(props)=>(props.$isDarkMode?"#fff":"#000")};
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
 `;
 
 const UserAvatar = styled.img`
@@ -265,9 +278,9 @@ const CardEmail = styled.p`
 const CardLowerWrap = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
-  width: 100%; 
+  width: 100%;
   color: ${(props) => (props.className === "active" ? "#28a745" : "#dc3545")};
 `;
 
@@ -502,10 +515,10 @@ function Dashboard() {
           <Sidebar />
         </SidebarContainer>
         <MainContent $isDarkMode={isDarkMode}>
-          <Header  $isDarkMode={isDarkMode}>Dashboard</Header>
+          <Header $isDarkMode={isDarkMode}>Dashboard</Header>
           <Separator />
           <TopBar>
-            <SectionHeading  $isDarkMode={isDarkMode}>User List</SectionHeading>
+            <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
             <SearchContainer $isDarkMode={isDarkMode}>
               <IoSearchOutline />
               <input
@@ -581,11 +594,13 @@ function Dashboard() {
         </MainContent>
       </DashboardContainer>
 
-      <SmallScreenDashboard  $isDarkMode={isDarkMode}>
-        <Header  $isDarkMode={isDarkMode}>Dashboard</Header>
+      <SmallScreenDashboard $isDarkMode={isDarkMode}>
+        <Container $isDarkMode={isDarkMode}>
+          <h1>Dashboard</h1>
+          <SmallscreenSidebar />
+        </Container>
         <Separator />
-
-        <SectionHeading  $isDarkMode={isDarkMode}>User List</SectionHeading>
+        <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
         <SearchContainer $isDarkMode={isDarkMode}>
           <IoSearchOutline />
           <input
@@ -601,7 +616,9 @@ function Dashboard() {
             <UserMeta $isDarkMode={isDarkMode}>
               <UserAvatar src={user.imageUrl} />
               <MetaData>
-                <CardUsername $isDarkMode={isDarkMode}>{user.username}</CardUsername>
+                <CardUsername $isDarkMode={isDarkMode}>
+                  {user.username}
+                </CardUsername>
                 <CardEmail $isDarkMode={isDarkMode}>{user.email}</CardEmail>
               </MetaData>
             </UserMeta>
@@ -630,7 +647,6 @@ function Dashboard() {
             )
           )}
         </PaginationWrapper>
-        
       </SmallScreenDashboard>
     </>
   );

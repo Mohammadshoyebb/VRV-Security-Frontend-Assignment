@@ -5,12 +5,15 @@ import { MdOutlineDelete } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import { RiToggleLine, RiToggleFill } from "react-icons/ri";
+
+//Importing ThemeContext
 import { useTheme } from "../../context/ThemeContext";
 
 // Importing components
 import AddUserModal from "../manageusers/AddUser";
 import EditUserModal from "../manageusers/EditUser";
 import Sidebar from "../../common/Sidebar";
+import SmallscreenSidebar from "../../common/SmallscreenSidebar";
 
 // Importing images
 import img1 from "../../../media/avatars/Avatar1.png";
@@ -304,6 +307,8 @@ const UserAvatar = styled.img`
   object-fit: cover;
 `;
 
+// Styled components specific to small screens
+
 const SmallScreenCardContainer = styled.div`
   @media (max-width: 768px) {
     display: flex;
@@ -312,6 +317,17 @@ const SmallScreenCardContainer = styled.div`
     gap: 20px;
   }
 `;
+
+const Container = styled.div`
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom:0;
+  }
+`;
+
 const CardContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -647,7 +663,10 @@ const ManageUsers = () => {
 
       <SmallScreenContainer $isDarkMode={isDarkMode}>
         <SmallScreenCardContainer $isDarkMode={isDarkMode}>
-          <Header $isDarkMode={isDarkMode}>Manage Users</Header>
+          <Container $isDarkMode={isDarkMode}>
+            <h1>Manage Users</h1>
+            <SmallscreenSidebar />
+          </Container>
 
           <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
           <SearchContainer $isDarkMode={isDarkMode}>
