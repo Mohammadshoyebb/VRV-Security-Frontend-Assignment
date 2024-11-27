@@ -1,23 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FaRegBell } from "react-icons/fa";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
+import SignInModal from "../authentication/SignIn"; 
 
 // Styled Components
 const NavbarContainer = styled.div.withConfig({
-    shouldForwardProp: (prop) => prop !== "isDarkMode" 
-  })`
-    display: flex;
-    height: 7vh;
-    width: auto;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
-    color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  `;
+  shouldForwardProp: (prop) => prop !== "isDarkMode",
+})`
+  display: flex;
+  height: 7vh;
+  width: auto;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
 const Heading = styled.div`
   font-size: 22px;
   font-weight: bold;
@@ -59,35 +61,50 @@ const AuthButton = styled.button`
 
 function Navbar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
-  
-  const handleAuthClick = (type) => {
-    alert(`Redirecting to ${type} page...`);
-    // Replace alert with actual routing logic or modal
-  };
+  const [showSignInModal, setShowSignInModal] = useState(false);
+
+  // Function to open the SignInModal
+  const openSignInModal = () => setShowSignInModal(true);
+
+  // Function to close the SignInModal
+  const closeSignInModal = () => setShowSignInModal(false);
 
   return (
-    <NavbarContainer $isDarkMode={isDarkMode}>
-      <Heading>VRV Security</Heading>
-      <ButtonContainer>
-        {/* Toggle Mode */}
-        <ToggleButton onClick={toggleDarkMode} aria-label="Toggle Dark Mode">
-          {isDarkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
-        </ToggleButton>
+    <>
+      {/* Navbar Component */}
+      <NavbarContainer $isDarkMode={isDarkMode}>
+        <Heading>VRV Security</Heading>
+        <ButtonContainer>
 
-        {/* Notification Button */}
-        <IconButton aria-label="Notifications">
-          <FaRegBell />
-        </IconButton>
+          {/* Toggle Mode */}
+          <ToggleButton onClick={toggleDarkMode} aria-label="Toggle Dark Mode">
+            {isDarkMode ? <MdOutlineDarkMode /> : <MdOutlineLightMode />}
+          </ToggleButton>
 
-        {/* Auth Buttons */}
-        <AuthButton $isDarkMode={isDarkMode} onClick={() => handleAuthClick("SignIn")}>
-          SignIn
-        </AuthButton>
-        <AuthButton $isDarkMode={isDarkMode} onClick={() => handleAuthClick("SignUp")}>
-          SignUp
-        </AuthButton>
-      </ButtonContainer>
-    </NavbarContainer>
+          {/* Notification Button */}
+          <IconButton aria-label="Notifications">
+            <FaRegBell />
+          </IconButton>
+
+          {/* Auth Buttons */}
+          <AuthButton
+            $isDarkMode={isDarkMode}
+            onClick={openSignInModal}
+          >
+            SignIn
+          </AuthButton>
+          <AuthButton $isDarkMode={isDarkMode}>
+            SignUp
+          </AuthButton>
+        </ButtonContainer>
+      </NavbarContainer>
+
+      {/* SignInModal Component */}
+      <SignInModal
+        show={showSignInModal} 
+        closeSignInModal={closeSignInModal} 
+      />
+    </>
   );
 }
 
