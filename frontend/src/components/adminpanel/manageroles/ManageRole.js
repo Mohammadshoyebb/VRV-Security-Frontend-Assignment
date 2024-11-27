@@ -1,13 +1,10 @@
-import React, { useState,useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { MdOutlineDelete } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import { useTheme } from "../../context/ThemeContext";
-
-
-
-// Importing components for Modals
+import Sidebar from "../../common/Sidebar";
 import AddRoleModal from "../manageroles/AddRole"; // Assuming you have this modal component
 
 // Importing images for user avatars
@@ -16,9 +13,13 @@ import img2 from "../../../media/avatars/Avatar2.png";
 import img3 from "../../../media/avatars/Avatar3.png";
 import img4 from "../../../media/avatars/Avatar4.png";
 import img5 from "../../../media/avatars/Avatar5.png";
-import Sidebar from "../../common/Sidebar";
+import img6 from "../../../media/avatars/Avatar6.png";
+import img7 from "../../../media/avatars/Avatar7.jpg";
+import img8 from "../../../media/avatars/Avatar8.png";
+import img9 from "../../../media/avatars/Avatar9.png";
+import img10 from "../../../media/avatars/Avatar10.png";
 
-//Styled Components
+// Styled Components
 const ManageRolesContainer = styled.div`
   display: flex;
   height: 80vh;
@@ -76,9 +77,7 @@ const SearchContainer = styled.div`
   border: 1.5px solid ${(props) => (props.$isDarkMode ? "#fff" : "#ddd")};
   border-radius: 5px;
   background-color: ${(props) =>
-    props.$isDarkMode
-      ? "#000"
-      : "#fff"}; 
+    props.$isDarkMode ? "#000" : "#fff"};
   padding: 5px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -168,8 +167,9 @@ const AddNewRoleWrapper = styled.div`
     padding: 1px;
   }
 `;
+
 const ErrorMessage = styled.div`
-width:100%;
+  width: 100%;
   text-align: center;
   padding: 20px;
   font-size: 16px;
@@ -178,15 +178,71 @@ width:100%;
   border-radius: 5px;
 `;
 
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const PageButton = styled.button`
+  padding: 10px 15px;
+  background-color: #2e86c1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+
+  &:hover {
+    background-color: #1e6e99;
+  }
+`;
+
 const ManageRoles = () => {
-    const { isDarkMode } = useTheme();
-    const [searchQuery, setSearchQuery] = useState("");
+  const { isDarkMode } = useTheme();
+  const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([
     { id: 1, username: "Aarav Sharma", email: "aravsharma@example.com", imageUrl: img1, role: "Admin" },
     { id: 2, username: "Diya Verma", email: "diyaverma@example.com", imageUrl: img2, role: "User" },
     { id: 3, username: "Ishaan Kumar", email: "ishaankumar@example.com", imageUrl: img3, role: "User" },
     { id: 4, username: "Rohan Patel", email: "rohanpatel@example.com", imageUrl: img4, role: "Moderator" },
     { id: 5, username: "Rishi Singh", email: "rishi@example.com", imageUrl: img5, role: "Admin" },
+    {
+      id: 6,
+      username: "Vishal Singh",
+      email: "vishal.singh@example.com",
+      role: "Moderator",
+      
+      imageUrl: img6,
+    },
+    {
+      id: 7,
+      username: "Anant Rao",
+      email: "anantrao@example.com",
+      role: "Manager",
+      imageUrl: img7,
+    },
+    {
+      id: 8,
+      username: "Sanya Mehta",
+      email: "sanyamehta@example.com",
+      role: "Admin",
+      imageUrl: img8,
+    },
+    {
+      id: 9,
+      username: "Priya Nair",
+      email: "priyanair@example.com",
+      role: "User",
+      imageUrl: img9,
+    },
+    {
+      id: 10,
+      username: "Kabir Joshi",
+      email: "kabirjoshi@example.com",
+      role: "Admin",
+      imageUrl: img10,
+    },
   ]);
 
   const [roles, setRoles] = useState([
@@ -200,14 +256,27 @@ const ManageRoles = () => {
     isEditMode: false,
     userToEdit: null,
   });
-   // Filter users based on search query
-   const filteredUsers = useMemo(
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const filteredUsers = useMemo(
     () =>
       users.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase())
       ),
     [searchQuery, users]
   );
+
+  const indexOfLastUser = currentPage * itemsPerPage;
+  const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const handleRoleChange = (userId, newRole) => {
     setUsers((prevUsers) =>
@@ -226,20 +295,18 @@ const ManageRoles = () => {
     setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
   };
 
- 
-
   return (
     <ManageRolesContainer>
       <SidebarContainer>
-      <Sidebar/>
+        <Sidebar />
       </SidebarContainer>
-      <MainContent  $isDarkMode={isDarkMode}>
+      <MainContent $isDarkMode={isDarkMode}>
         <Header>Manage Roles</Header>
         <Separator />
         <TopBar>
-          <SectionHeading>Users & Roles List </SectionHeading>
+          <SectionHeading>Users & Roles List</SectionHeading>
           <TopBarRight>
-          <SearchContainer $isDarkMode={isDarkMode}>
+            <SearchContainer $isDarkMode={isDarkMode}>
               <IoSearchOutline />
               <input
                 type="text"
@@ -269,52 +336,60 @@ const ManageRoles = () => {
         {filteredUsers.length === 0 && searchQuery !== "" ? (
           <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
         ) : (
-          <TableContainer   $isDarkMode={isDarkMode}>
-          <Table>
-            <TableHead>
-              <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Actions</th>
-              </tr>
-            </TableHead>
-            <TableBody $isDarkMode={isDarkMode}>
-  {filteredUsers.map((user) => (
-    <tr key={user.id}>
-      <td>{user.id}</td>
-      <td>
-        <AvatarUsernameWrapper>
-          <Avatar src={user.imageUrl} alt="avatar" />
-          {user.username}
-        </AvatarUsernameWrapper>
-      </td>
-      <td>{user.email}</td>
-      <td>
-        <select
-          value={user.role}
-          onChange={(e) => handleRoleChange(user.id, e.target.value)}
-        >
-          {roles.map((role) => (
-            <option key={role.id} value={role.roleName}>
-              {role.roleName}
-            </option>
-          ))}
-        </select>
-      </td>
-      <td>
-        <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-          <MdOutlineDelete /> Delete
-        </DeleteButton>
-      </td>
-    </tr>
-  ))}
-</TableBody>
-
-          </Table>
-        </TableContainer>
+          <TableContainer $isDarkMode={isDarkMode}>
+            <Table>
+              <TableHead>
+                <tr>
+                  <th>Id</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </TableHead>
+              <TableBody $isDarkMode={isDarkMode}>
+                {currentUsers.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.id}</td>
+                    <td>
+                      <AvatarUsernameWrapper>
+                        <Avatar src={user.imageUrl} alt="avatar" />
+                        {user.username}
+                      </AvatarUsernameWrapper>
+                    </td>
+                    <td>{user.email}</td>
+                    <td>
+                      <select
+                        value={user.role}
+                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                      >
+                        {roles.map((role) => (
+                          <option key={role.id} value={role.roleName}>
+                            {role.roleName}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td>
+                      <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                        <MdOutlineDelete /> Delete
+                      </DeleteButton>
+                    </td>
+                  </tr>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         )}
+
+        <PaginationWrapper>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <PageButton key={index} onClick={() => handlePageChange(index + 1)}>
+              {index + 1}
+            </PageButton>
+          ))}
+        </PaginationWrapper>
+
         {modalState.isOpen && !modalState.isEditMode && (
           <AddRoleModal
             isOpen={modalState.isOpen}
