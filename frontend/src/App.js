@@ -28,10 +28,10 @@ function App() {
           <div className="container">
             <Routes>
               {/* AdminControl Routes */}
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/manageuser" element={<ManageUsers/>}/>
-              <Route path="/managerole" element={<ManageRole/>}/>
-              <Route path="/managepermission" element={<Permission/>}/>
+              <Route exact path="/" element={<Dashboard />} />
+              <Route exact path="/manageuser" element={<ManageUsers/>}/>
+              <Route exact path="/managerole" element={<ManageRole/>}/>
+              <Route exact path="/managepermission" element={<Permission/>}/>
 
               
             </Routes>

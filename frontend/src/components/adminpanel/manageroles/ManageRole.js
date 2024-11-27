@@ -5,7 +5,7 @@ import { IoMdAdd } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import { useTheme } from "../../context/ThemeContext";
 import Sidebar from "../../common/Sidebar";
-import AddRoleModal from "../manageroles/AddRole"; // Assuming you have this modal component
+import AddRoleModal from "../manageroles/AddRole"; 
 
 // Importing images for user avatars
 import img1 from "../../../media/avatars/Avatar1.png";
