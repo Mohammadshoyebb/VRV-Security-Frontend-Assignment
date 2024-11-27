@@ -18,6 +18,7 @@ const SidebarContainer = styled.div`
   left: 0;
   bottom: 0;
   width: 250px;
+  z-index: 999;
   padding: 20px;
   transform: translateX(0);
 `;
