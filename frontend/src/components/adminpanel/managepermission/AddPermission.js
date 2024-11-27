@@ -80,7 +80,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: calc(100% - 40px); 
+  width: calc(100% - 40px);
   margin: 0 auto;
   font-size: 15px;
   font-weight: bold;
@@ -98,7 +98,6 @@ const ErrorMessage = styled.div`
   color: #000;
   font-size: 14px;
 `;
-
 
 const AddPermissionModal = ({ isOpen, onClose, onSave }) => {
   const { isDarkMode } = useTheme();
@@ -138,18 +137,17 @@ const AddPermissionModal = ({ isOpen, onClose, onSave }) => {
         <ModalHeader>Add New Permission</ModalHeader>
         {error && <ErrorMessage $isDarkMode={isDarkMode}>{error}</ErrorMessage>}
         <FormContainer onSubmit={handleSubmit}>
-        <FormField>
-        <Label $isDarkMode={isDarkMode}>Permission Name:</Label>
-          <InputField
-            $isDarkMode={isDarkMode}
-            type="text"
-            placeholder="Enter Permission Name"
-            value={permissionName}
-            onChange={(e) => setPermissionName(e.target.value)}
-          />
+          <FormField>
+            <Label $isDarkMode={isDarkMode}>Permission Name:</Label>
+            <InputField
+              $isDarkMode={isDarkMode}
+              type="text"
+              placeholder="Enter Permission Name"
+              value={permissionName}
+              onChange={(e) => setPermissionName(e.target.value)}
+            />
           </FormField>
           <Button type="submit">Add Permission</Button>
-         
         </FormContainer>
       </ModalContainer>
     </ModalBackground>

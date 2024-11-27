@@ -5,8 +5,8 @@ import { IoMdAdd } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import { useTheme } from "../../context/ThemeContext";
 
-
-import AddPermissionModal from "../managepermission/AddPermission"; 
+import AddPermissionModal from "../managepermission/AddPermission";
+import Sidebar from "../../common/Sidebar";
 
 // Importing images for user avatars
 import img1 from "../../../media/avatars/Avatar1.png";
@@ -14,7 +14,12 @@ import img2 from "../../../media/avatars/Avatar2.png";
 import img3 from "../../../media/avatars/Avatar3.png";
 import img4 from "../../../media/avatars/Avatar4.png";
 import img5 from "../../../media/avatars/Avatar5.png";
-import Sidebar from "../../common/Sidebar";
+import img6 from "../../../media/avatars/Avatar6.png";
+import img7 from "../../../media/avatars/Avatar7.jpg";
+import img8 from "../../../media/avatars/Avatar8.png";
+import img9 from "../../../media/avatars/Avatar9.png";
+import img10 from "../../../media/avatars/Avatar10.png";
+
 
 // Styled Components
 const ManagePermissionsContainer = styled.div`
@@ -73,10 +78,7 @@ const SearchContainer = styled.div`
   align-items: center;
   border: 1.5px solid ${(props) => (props.$isDarkMode ? "#fff" : "#ddd")};
   border-radius: 5px;
-  background-color: ${(props) =>
-    props.$isDarkMode
-      ? "#000"
-      : "#fff"};
+  background-color: ${(props) => (props.$isDarkMode ? "#000" : "#fff")};
   padding: 5px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -176,16 +178,105 @@ const ErrorMessage = styled.div`
   background-color: #f8d7da;
   border-radius: 5px;
 `;
+const PaginationControls = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+`;
+
+const PaginationButton = styled.button`
+  background-color: ${(props) =>
+    props.$isCurrent ? "#2e86c1" : props.$isDarkMode ? "#555" : "#ddd"};
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  &:hover {
+    background-color: ${(props) => (props.$isDarkMode ? "#777" : "#bbb")};
+  }
+`;
 
 const Permission = () => {
   const { isDarkMode } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([
-    { id: 1, username: "Aarav Sharma", email: "aravsharma@example.com", imageUrl: img1, role: "Admin" },
-    { id: 2, username: "Diya Verma", email: "diyaverma@example.com", imageUrl: img2, role: "User" },
-    { id: 3, username: "Ishaan Kumar", email: "ishaankumar@example.com", imageUrl: img3, role: "User" },
-    { id: 4, username: "Rohan Patel", email: "rohanpatel@example.com", imageUrl: img4, role: "Moderator" },
-    { id: 5, username: "Rishi Singh", email: "rishi@example.com", imageUrl: img5, role: "Admin" },
+    {
+      id: 1,
+      username: "Aarav Sharma",
+      email: "aravsharma@example.com",
+      imageUrl: img1,
+      role: "Admin",
+    },
+    {
+      id: 2,
+      username: "Diya Verma",
+      email: "diyaverma@example.com",
+      imageUrl: img2,
+      role: "User",
+    },
+    {
+      id: 3,
+      username: "Ishaan Kumar",
+      email: "ishaankumar@example.com",
+      imageUrl: img3,
+      role: "User",
+    },
+    {
+      id: 4,
+      username: "Rohan Patel",
+      email: "rohanpatel@example.com",
+      imageUrl: img4,
+      role: "Moderator",
+    },
+    {
+      id: 5,
+      username: "Rishi Singh",
+      email: "rishi@example.com",
+      imageUrl: img5,
+      role: "Admin",
+    },
+    {
+      id: 6,
+      username: "Vishal Singh",
+      email: "vishal.singh@example.com",
+      role: "Moderator",
+      imageUrl: img6,
+    },
+    {
+      id: 7,
+      username: "Anant Rao",
+      email: "anantrao@example.com",
+      role: "Manager",
+      imageUrl: img7,
+    },
+    {
+      id: 8,
+      username: "Sanya Mehta",
+      email: "sanyamehta@example.com",
+      role: "Admin",
+      imageUrl: img8,
+    },
+    {
+      id: 9,
+      username: "Priya Nair",
+      email: "priyanair@example.com",
+      role: "User",
+      imageUrl: img9,
+    },
+    {
+      id: 10,
+      username: "Kabir Joshi",
+      email: "kabirjoshi@example.com",
+      role: "Admin",
+      imageUrl: img10,
+    }
   ]);
 
   const [permissions, setPermissions] = useState([
@@ -200,6 +291,10 @@ const Permission = () => {
     permissionToEdit: null,
   });
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   // Filter users based on search query
   const filteredUsers = useMemo(
     () =>
@@ -208,6 +303,14 @@ const Permission = () => {
       ),
     [searchQuery, users]
   );
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+  }, [currentPage, filteredUsers]);
+
+  const handlePageChange = (page) => setCurrentPage(page);
 
   const handlePermissionChange = (userId, permission, checked) => {
     setUsers((prevUsers) =>
@@ -223,13 +326,11 @@ const Permission = () => {
       )
     );
   };
-  
 
   const handleAddPermission = (newPermission) => {
     setPermissions((prevPermissions) => [...prevPermissions, newPermission]);
     setModalState({ isOpen: false });
   };
-  
 
   const handleDeleteUser = (userId) => {
     setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
@@ -244,7 +345,7 @@ const Permission = () => {
         <Header>Manage Permissions</Header>
         <Separator />
         <TopBar>
-          <SectionHeading>Users & Permissions List </SectionHeading>
+          <SectionHeading>Users & Permissions List</SectionHeading>
           <TopBarRight>
             <SearchContainer $isDarkMode={isDarkMode}>
               <IoSearchOutline />
@@ -256,7 +357,7 @@ const Permission = () => {
               />
             </SearchContainer>
             <button
-              onClick={() => setModalState({ isOpen: true, isEditMode: false })}
+              onClick={() => setModalState({ isOpen: true })}
               style={{
                 backgroundColor: "#28a745",
                 color: "white",
@@ -273,7 +374,7 @@ const Permission = () => {
           </TopBarRight>
         </TopBar>
 
-        {filteredUsers.length === 0 ? (
+        {paginatedUsers.length === 0 ? (
           <ErrorMessage>No users found</ErrorMessage>
         ) : (
           <TableContainer $isDarkMode={isDarkMode}>
@@ -289,7 +390,7 @@ const Permission = () => {
                 </tr>
               </TableHead>
               <TableBody $isDarkMode={isDarkMode}>
-                {filteredUsers.map((user) => (
+                {paginatedUsers.map((user) => (
                   <tr key={user.id}>
                     <td>{user.id}</td>
                     <td>
@@ -301,26 +402,30 @@ const Permission = () => {
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td>
-  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-    {permissions.map((permission) => (
-      <label key={permission.id}>
-        <input
-          type="checkbox"
-          checked={user.permissions?.includes(permission.permission)}
-          onChange={(e) =>
-            handlePermissionChange(user.id, permission.permission, e.target.checked)
-          }
-        />
-        {permission.permission}
-      </label>
-    ))}
-  </div>
-</td>
-
+                      <div style={{ display: "flex", gap: "10px" }}>
+                        {permissions.map((perm) => (
+                          <label key={perm.id}>
+                            <input
+                              type="checkbox"
+                              checked={user.permissions?.includes(
+                                perm.permission
+                              )}
+                              onChange={(e) =>
+                                handlePermissionChange(
+                                  user.id,
+                                  perm.permission,
+                                  e.target.checked
+                                )
+                              }
+                            />
+                            {perm.permission}
+                          </label>
+                        ))}
+                      </div>
+                    </td>
                     <td>
                       <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                        <MdOutlineDelete/>
-                        Delete
+                        <MdOutlineDelete /> Delete
                       </DeleteButton>
                     </td>
                   </tr>
@@ -330,11 +435,37 @@ const Permission = () => {
           </TableContainer>
         )}
 
-        {/* AddPermission modal */}
+        <PaginationControls>
+          <PaginationButton
+            $isDarkMode={isDarkMode}
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            Previous
+          </PaginationButton>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <PaginationButton
+              key={i}
+              $isDarkMode={isDarkMode}
+              $isCurrent={currentPage === i + 1}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </PaginationButton>
+          ))}
+          <PaginationButton
+            $isDarkMode={isDarkMode}
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </PaginationButton>
+        </PaginationControls>
+
         {modalState.isOpen && (
           <AddPermissionModal
             isOpen={modalState.isOpen}
-            onClose={() => setModalState({ ...modalState, isOpen: false })}
+            onClose={() => setModalState({ isOpen: false })}
             onSave={handleAddPermission}
           />
         )}
