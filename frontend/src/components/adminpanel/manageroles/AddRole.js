@@ -107,14 +107,26 @@ function AddRole({ isOpen, onClose, onSave }) {
   const [error, setError] = useState("");
 
   const validateFields = () => {
+    // Check if role name is empty
     if (!roleName.trim()) {
       setError("Role name cannot be empty.");
       return false;
     }
-    if (roleName.length < 3) {
-      setError("Role name should consist of 3 or more characters.");
+
+    // Check if role name contains only letters and spaces
+    const roleRegex = /^[A-Za-z\s]+$/;
+    if (!roleRegex.test(roleName)) {
+      setError("Role name can only contain letters and spaces.");
       return false;
     }
+
+    // Check if role name length is at least 4 characters
+    if (roleName.length < 4) {
+      setError("Role name should consist of 4 or more characters.");
+      return false;
+    }
+
+    // If all validations pass, clear the error
     setError("");
     return true;
   };
