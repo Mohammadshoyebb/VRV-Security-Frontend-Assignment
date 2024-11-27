@@ -5,7 +5,7 @@ import { IoMdAdd } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import { useTheme } from "../../context/ThemeContext";
 import Sidebar from "../../common/Sidebar";
-import AddRoleModal from "../manageroles/AddRole"; 
+import AddRoleModal from "../manageroles/AddRole";
 
 // Importing images for user avatars
 import img1 from "../../../media/avatars/Avatar1.png";
@@ -24,6 +24,9 @@ const ManageRolesContainer = styled.div`
   display: flex;
   height: 80vh;
   margin-bottom: 1rem;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const SidebarContainer = styled.div`
@@ -169,6 +172,7 @@ const ActionIcon = styled.div`
 const AddNewRoleWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -206,6 +210,87 @@ const PageButton = styled.button`
   &:hover {
     background-color: #1e6e99;
   }
+`;
+
+const SmallScreenContainer = styled.div`
+  @media (max-width: 768px) {
+    min-height: 77.5vh;
+    display: block;
+    padding: 20px;
+    color: ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
+    background-color: ${(props) => (props.$isDarkMode ? "#1a1a1a" : "#f9f9f9")};
+  }
+  display: none;
+`;
+
+const UserCard = styled.div`
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+`;
+
+const UserMeta = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const MetaData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 5px;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const UserAvatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const SmallScreenCardContainer = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+  }
+`;
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 15px;
+`;
+
+const CardUsername = styled.h3`
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const CardEmail = styled.p`
+  font-size: 14px;
+  margin: 0;
+  color: ${(props) => (props.$isDarkMode ? "#eaecee" : "#555")};
+`;
+
+const CardLowerWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: ${(props) => (props.className === "active" ? "#28a745" : "#dc3545")};
 `;
 
 const ManageRoles = () => {
@@ -336,114 +421,206 @@ const ManageRoles = () => {
   };
 
   return (
-    <ManageRolesContainer>
-      <SidebarContainer>
-        <Sidebar />
-      </SidebarContainer>
-      <MainContent $isDarkMode={isDarkMode}>
-        <Header>Manage Roles</Header>
-        <Separator />
-        <TopBar>
-          <SectionHeading>Users & Roles List</SectionHeading>
-          <TopBarRight>
-            <SearchContainer $isDarkMode={isDarkMode}>
-              <IoSearchOutline />
-              <input
-                type="text"
-                placeholder="Search User..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </SearchContainer>
-            <button
-              onClick={() => setModalState({ isOpen: true, isEditMode: false })}
-              style={{
-                backgroundColor: "#28a745",
-                color: "white",
-                padding: "6px 12px",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              <AddNewRoleWrapper>
-                <IoMdAdd style={{ fontSize: "16px", marginRight: "6px" }} />
-                Add New Role
-              </AddNewRoleWrapper>
-            </button>
-          </TopBarRight>
-        </TopBar>
+    <>
+      <ManageRolesContainer>
+        <SidebarContainer>
+          <Sidebar />
+        </SidebarContainer>
+        <MainContent $isDarkMode={isDarkMode}>
+          <Header>Manage Roles</Header>
+          <Separator />
+          <TopBar>
+            <SectionHeading>Users & Roles List</SectionHeading>
+            <TopBarRight>
+              <SearchContainer $isDarkMode={isDarkMode}>
+                <IoSearchOutline />
+                <input
+                  type="text"
+                  placeholder="Search User..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </SearchContainer>
+              <button
+                onClick={() =>
+                  setModalState({ isOpen: true, isEditMode: false })
+                }
+                style={{
+                  backgroundColor: "#28a745",
+                  color: "white",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                <AddNewRoleWrapper>
+                  <IoMdAdd style={{ fontSize: "16px", marginRight: "6px" }} />
+                  Add New Role
+                </AddNewRoleWrapper>
+              </button>
+            </TopBarRight>
+          </TopBar>
 
-        {filteredUsers.length === 0 && searchQuery !== "" ? (
-          <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
-        ) : (
-          <TableContainer $isDarkMode={isDarkMode}>
-            <Table>
-              <TableHead>
-                <tr>
-                  <th>Id</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Actions</th>
-                </tr>
-              </TableHead>
-              <TableBody $isDarkMode={isDarkMode}>
-                {currentUsers.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>
-                      <AvatarUsernameWrapper>
-                        <Avatar src={user.imageUrl} alt="avatar" />
-                        {user.username}
-                      </AvatarUsernameWrapper>
-                    </td>
-                    <td>{user.email}</td>
-                    <td>
-                      <select
-                        value={user.role}
-                        onChange={(e) =>
-                          handleRoleChange(user.id, e.target.value)
-                        }
-                      >
-                        {roles.map((role) => (
-                          <option key={role.id} value={role.roleName}>
-                            {role.roleName}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
-                    <td>
-                      <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                        <ActionIcon>
-                          {" "}
-                          <DeleteIcon /> Delete
-                        </ActionIcon>
-                      </DeleteButton>
-                    </td>
+          {filteredUsers.length === 0 && searchQuery !== "" ? (
+            <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
+          ) : (
+            <TableContainer $isDarkMode={isDarkMode}>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+                </TableHead>
+                <TableBody $isDarkMode={isDarkMode}>
+                  {currentUsers.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>
+                        <AvatarUsernameWrapper>
+                          <Avatar src={user.imageUrl} alt="avatar" />
+                          {user.username}
+                        </AvatarUsernameWrapper>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>
+                        <select
+                          value={user.role}
+                          onChange={(e) =>
+                            handleRoleChange(user.id, e.target.value)
+                          }
+                        >
+                          {roles.map((role) => (
+                            <option key={role.id} value={role.roleName}>
+                              {role.roleName}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                          <ActionIcon>
+                            {" "}
+                            <DeleteIcon /> Delete
+                          </ActionIcon>
+                        </DeleteButton>
+                      </td>
+                    </tr>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
 
-        <PaginationWrapper>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <PageButton key={index} onClick={() => handlePageChange(index + 1)}>
-              {index + 1}
-            </PageButton>
+          <PaginationWrapper>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PageButton
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </PageButton>
+            ))}
+          </PaginationWrapper>
+
+          {modalState.isOpen && !modalState.isEditMode && (
+            <AddRoleModal
+              isOpen={modalState.isOpen}
+              onClose={() => setModalState({ ...modalState, isOpen: false })}
+              onSave={handleAddRole}
+            />
+          )}
+        </MainContent>
+      </ManageRolesContainer>
+
+      <SmallScreenContainer $isDarkMode={isDarkMode}>
+        <SmallScreenCardContainer $isDarkMode={isDarkMode}>
+          <Header $isDarkMode={isDarkMode}>Manage Roles</Header>
+
+          <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
+          <SearchContainer $isDarkMode={isDarkMode}>
+            <IoSearchOutline />
+            <input
+              type="text"
+              placeholder="Search User..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </SearchContainer>
+          <button
+            onClick={() => setModalState({ isOpen: true, isEditMode: false })}
+            style={{
+              backgroundColor: "#28a745",
+              color: "white",
+              padding: "6px 12px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginBottom: "1rem",
+            }}
+          >
+            <AddNewRoleWrapper>
+              <IoMdAdd style={{ fontSize: "16px", marginRight: "6px" }} />
+              Add New Role
+            </AddNewRoleWrapper>
+          </button>
+          {filteredUsers.map((user) => (
+            <UserCard key={user.id} $isDarkMode={isDarkMode}>
+              <UserMeta $isDarkMode={isDarkMode}>
+                <UserAvatar src={user.imageUrl} />
+                <MetaData>
+                  <CardUsername $isDarkMode={isDarkMode}>
+                    {user.username}
+                  </CardUsername>
+                  <CardEmail $isDarkMode={isDarkMode}>{user.email}</CardEmail>
+                </MetaData>
+              </UserMeta>
+              <CardContent>
+                <CardLowerWrap>
+                  <select
+                    value={user.role}
+                    onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                  >
+                    {roles.map((role) => (
+                      <option key={role.id} value={role.roleName}>
+                        {role.roleName}
+                      </option>
+                    ))}
+                  </select>
+
+                  <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                    <ActionIcon>
+                      <DeleteIcon />
+                      Delete
+                    </ActionIcon>
+                  </DeleteButton>
+                </CardLowerWrap>
+              </CardContent>
+            </UserCard>
           ))}
-        </PaginationWrapper>
+          <PaginationWrapper>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PageButton
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </PageButton>
+            ))}
+          </PaginationWrapper>
 
-        {modalState.isOpen && !modalState.isEditMode && (
-          <AddRoleModal
-            isOpen={modalState.isOpen}
-            onClose={() => setModalState({ ...modalState, isOpen: false })}
-            onSave={handleAddRole}
-          />
-        )}
-      </MainContent>
-    </ManageRolesContainer>
+          {modalState.isOpen && !modalState.isEditMode && (
+            <AddRoleModal
+              isOpen={modalState.isOpen}
+              onClose={() => setModalState({ ...modalState, isOpen: false })}
+              onSave={handleAddRole}
+            />
+          )}
+        </SmallScreenCardContainer>
+      </SmallScreenContainer>
+    </>
   );
 };
 

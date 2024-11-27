@@ -23,6 +23,7 @@ const ModalContainer = styled.div`
   width: 90%;
   max-width: 600px;
   padding: 20px;
+  margin: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
 `;
@@ -61,7 +62,7 @@ const InputField = styled.input`
   border: 1px solid ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
-  width: calc(100% - 40px);
+  width: calc(100% - 30px);
 `;
 
 const Button = styled.button`
@@ -101,64 +102,62 @@ const ErrorMessage = styled.div`
   font-size: 14px;
 `;
 function AddRole({ isOpen, onClose, onSave }) {
-    const { isDarkMode } = useTheme();
-    const [roleName, setRoleName] = useState("");
-    const [error, setError] = useState("");
-  
-    const validateFields = () => {
-      if (!roleName.trim()) {
-        setError("Role name cannot be empty.");
-        return false;
-      }
-      if (roleName.length < 3) {
-        setError("Role name should consist of 3 or more characters.");
-        return false;
-      }
-      setError(""); 
-      return true;
-    };
-  
-    const handleAddRole = (e) => {
-      e.preventDefault();
-      if (validateFields()) {
-        const newRole = {
-          id: Date.now(),
-          roleName,
-        };
-        onSave(newRole); 
-        setRoleName("");
-        onClose(); 
-      }
-    };
-  
-    if (!isOpen) return null;
-  
-    return (
-      <ModalBackground>
-        <ModalContainer $isDarkMode={isDarkMode}>
-          <CloseButton $isDarkMode={isDarkMode} onClick={onClose}>
-            &times;
-          </CloseButton>
-          <ModalHeader>Add New Role</ModalHeader>
-          {error && <ErrorMessage $isDarkMode={isDarkMode}>{error}</ErrorMessage>}
-          <FormContainer onSubmit={handleAddRole}>
-            <FormField>
-              <Label $isDarkMode={isDarkMode}>Role Name:</Label>
-              <InputField
-                $isDarkMode={isDarkMode}
-                type="text"
-                placeholder="e.g. Admin, User"
-                value={roleName}
-                onChange={(e) => setRoleName(e.target.value)}
-              />
-            </FormField>
-            <Button type="submit">Add Role</Button>
-          </FormContainer>
-        </ModalContainer>
-      </ModalBackground>
-    );
-  }
-  
-  
+  const { isDarkMode } = useTheme();
+  const [roleName, setRoleName] = useState("");
+  const [error, setError] = useState("");
+
+  const validateFields = () => {
+    if (!roleName.trim()) {
+      setError("Role name cannot be empty.");
+      return false;
+    }
+    if (roleName.length < 3) {
+      setError("Role name should consist of 3 or more characters.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
+  const handleAddRole = (e) => {
+    e.preventDefault();
+    if (validateFields()) {
+      const newRole = {
+        id: Date.now(),
+        roleName,
+      };
+      onSave(newRole);
+      setRoleName("");
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <ModalBackground>
+      <ModalContainer $isDarkMode={isDarkMode}>
+        <CloseButton $isDarkMode={isDarkMode} onClick={onClose}>
+          &times;
+        </CloseButton>
+        <ModalHeader>Add New Role</ModalHeader>
+        {error && <ErrorMessage $isDarkMode={isDarkMode}>{error}</ErrorMessage>}
+        <FormContainer onSubmit={handleAddRole}>
+          <FormField>
+            <Label $isDarkMode={isDarkMode}>Role Name:</Label>
+            <InputField
+              $isDarkMode={isDarkMode}
+              type="text"
+              placeholder="e.g. Admin, User"
+              value={roleName}
+              onChange={(e) => setRoleName(e.target.value)}
+            />
+          </FormField>
+          <Button type="submit">Add Role</Button>
+        </FormContainer>
+      </ModalContainer>
+    </ModalBackground>
+  );
+}
 
 export default AddRole;
