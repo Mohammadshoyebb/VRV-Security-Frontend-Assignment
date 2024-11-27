@@ -147,29 +147,8 @@ const AvatarUsernameWrapper = styled.div`
   gap: 12px;
 `;
 
-const DeleteButton = styled.button`
-  background-color: #dc3545;
-  color: white;
-  margin-top: 2px;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #c82333;
-  }
-`;
-
 const DeleteIcon = styled(MdOutlineDelete)`
   font-size: 17px;
-`;
-
-const ActionIcon = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 5px;
-  font-size: 14px;
 `;
 
 const AddNewPermissionWrapper = styled.div`
@@ -219,9 +198,12 @@ const PaginationButton = styled.button`
   }
 `;
 
+// Styled components specific to small screens
+
 const SmallScreenContainer = styled.div`
   @media (max-width: 768px) {
     min-height: 77.5vh;
+    height: auto;
     display: block;
     padding: 20px;
     color: ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
@@ -433,26 +415,28 @@ const Permission = () => {
     setModalState({ isOpen: false });
   };
   const handleDeletePermission = (userId, permission) => {
-    console.log("Deleting permission:", permission, "for user:", userId);
-
-    setUsers((prevUsers) => {
-      // Update users' permissions
-      const updatedUsers = prevUsers.map((user) =>
-        user.id === userId
-          ? {
-              ...user,
-              permissions: (user.permissions || []).filter(
-                (perm) => perm !== permission
-              ),
-            }
-          : user
+    if (
+      window.confirm(
+        `Are you sure you want to remove the permission "${permission}"?`
+      )
+    ) {
+      setUsers((prevUsers) => {
+        return prevUsers.map((user) =>
+          user.id === userId
+            ? {
+                ...user,
+                permissions: (user.permissions || []).filter(
+                  (perm) => perm !== permission
+                ),
+              }
+            : user
+        );
+      });
+      // Ensure the `permissions` state is updated as well if necessary
+      setPermissions((prevPermissions) =>
+        prevPermissions.filter((perm) => perm.permission !== permission)
       );
-
-      // Log to check if the state has been updated correctly
-      console.log("Updated users:", updatedUsers);
-
-      return updatedUsers;
-    });
+    }
   };
 
   return (
@@ -655,17 +639,23 @@ const Permission = () => {
                   <div
                     style={{
                       display: "flex",
-                      gap: "10px",
+                      flexWrap: "wrap", 
+                      gap: "10px", 
                       color: isDarkMode ? "white" : "black",
                     }}
                   >
                     {permissions.map((perm) => (
-                      <label key={perm.id}>
+                      <label
+                        key={perm.id}
+                        style={{ flexBasis: "calc(33.33% - 10px)" }}
+                      >
+                        {" "}
+                        {/* Allows 3 items per row */}
                         <input
                           type="checkbox"
                           checked={
                             user.permissions?.includes(perm.permission) || false
-                          } // Ensure it's always a boolean (true/false)
+                          }
                           onChange={(e) =>
                             handlePermissionChange(
                               user.id,
@@ -678,7 +668,7 @@ const Permission = () => {
                         <button
                           onClick={() =>
                             handleDeletePermission(user.id, perm.permission)
-                          } // Delete permission
+                          }
                           style={{
                             backgroundColor: "#dc3545",
                             color: "white",
