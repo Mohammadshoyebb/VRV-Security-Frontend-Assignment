@@ -4,6 +4,7 @@ import { FaRegBell } from "react-icons/fa";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
 import SignInModal from "../authentication/SignIn"; 
+import SignUpModal from "../authentication/SignUp"; 
 
 // Styled Components
 const NavbarContainer = styled.div.withConfig({
@@ -61,13 +62,16 @@ const AuthButton = styled.button`
 
 function Navbar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
+
   const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
 
-  // Function to open the SignInModal
+  // Functions to open/close modals
   const openSignInModal = () => setShowSignInModal(true);
-
-  // Function to close the SignInModal
   const closeSignInModal = () => setShowSignInModal(false);
+
+  const openSignUpModal = () => setShowSignUpModal(true);
+  const closeSignUpModal = () => setShowSignUpModal(false);
 
   return (
     <>
@@ -87,22 +91,23 @@ function Navbar() {
           </IconButton>
 
           {/* Auth Buttons */}
-          <AuthButton
-            $isDarkMode={isDarkMode}
-            onClick={openSignInModal}
-          >
+          <AuthButton $isDarkMode={isDarkMode} onClick={openSignInModal}>
             SignIn
           </AuthButton>
-          <AuthButton $isDarkMode={isDarkMode}>
+          <AuthButton $isDarkMode={isDarkMode} onClick={openSignUpModal}>
             SignUp
           </AuthButton>
         </ButtonContainer>
       </NavbarContainer>
 
-      {/* SignInModal Component */}
-      <SignInModal
+      {/* Modals */}
+      <SignInModal 
         show={showSignInModal} 
         closeSignInModal={closeSignInModal} 
+      />
+      <SignUpModal 
+        show={showSignUpModal} 
+        closeSignUpModal={closeSignUpModal} 
       />
     </>
   );
