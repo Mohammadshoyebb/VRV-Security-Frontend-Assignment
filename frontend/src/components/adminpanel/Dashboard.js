@@ -45,13 +45,14 @@ const Header = styled.div`
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
 `;
 
 const Separator = styled.hr`
   border: none;
   height: 2px;
-  background-color:#808b96;
-  margin-bottom:1.5rem;
+  background-color: #808b96;
+  margin-bottom: 1.5rem;
 `;
 
 const TopBar = styled.div`
@@ -64,6 +65,8 @@ const TopBar = styled.div`
 const SectionHeading = styled.h2`
   font-size: 20px;
   margin: 0;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+  
 `;
 
 const SearchContainer = styled.div`
@@ -77,6 +80,8 @@ const SearchContainer = styled.div`
       : "#fff"}; /* Background color based on dark mode */
   padding: 5px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+
 
   input {
     border: none;
@@ -86,6 +91,9 @@ const SearchContainer = styled.div`
     font-size: 16px;
     margin-left: 10px;
     flex: 1;
+  }
+  @media (max-width: 768px) {
+    margin: 1rem 0rem;
   }
 `;
 
@@ -183,6 +191,86 @@ const ErrorMessage = styled.div`
   border-radius: 5px;
 `;
 
+//Styled Components for small screens
+
+const SmallScreenDashboard = styled.div`
+  @media (max-width: 768px) {
+  min-height: 77.5vh;
+    display: block;
+    padding: 20px;
+    background-color: ${(props) => (props.$isDarkMode ? "#1a1a1a" : "#f9f9f9")};
+  }
+  display: none;
+`;
+
+const UserCard = styled.div`
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+`;
+
+const UserMeta = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  // color:${(props)=>(props.$isDarkMode?"#fff":"#000")};
+`;
+
+const MetaData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 5px;
+  color:${(props)=>(props.$isDarkMode?"#fff":"#000")};
+`;
+
+const UserAvatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const CardUsername = styled.h3`
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const CardRole = styled.p`
+  font-size: 14px;
+  margin: 0;
+  color: ${(props) => (props.$isDarkMode ? "#ccc" : "#555")};
+`;
+
+const CardEmail = styled.p`
+  font-size: 14px;
+  margin: 0;
+  color: ${(props) => (props.$isDarkMode ? "#eaecee" : "#555")};
+`;
+
+const CardLowerWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+  align-items: center;
+  width: 100%; 
+  color: ${(props) => (props.className === "active" ? "#28a745" : "#dc3545")};
+`;
+
 function Dashboard() {
   const { isDarkMode } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
@@ -191,7 +279,7 @@ function Dashboard() {
     {
       id: 1,
       username: "Aarav Sharma",
-      email: "aaravsharma@example.com",
+      email: "aaravsharma@gmail.com",
       role: "Admin",
       permission: "Read, Write, Delete",
       createdDate: "2024-01-01",
@@ -201,7 +289,7 @@ function Dashboard() {
     {
       id: 2,
       username: "Diya Verma",
-      email: "diyaverma@example.com",
+      email: "diyaverma@gmail.com",
       role: "Moderator",
       permission: "Read, Delete",
       createdDate: "2024-02-15",
@@ -211,7 +299,7 @@ function Dashboard() {
     {
       id: 3,
       username: "Ishaan Kumar",
-      email: "ishaankumar@example.com",
+      email: "ishaankumar@gmail.com",
       role: "User",
       permission: "Read",
       createdDate: "2024-03-10",
@@ -221,7 +309,7 @@ function Dashboard() {
     {
       id: 4,
       username: "Rohan Patel",
-      email: "rohanpatel@example.com",
+      email: "rohanpatel@gmail.com",
       role: "Manager",
       permission: "Read, Write",
       createdDate: "2024-04-20",
@@ -231,7 +319,7 @@ function Dashboard() {
     {
       id: 5,
       username: "Madhav Gupta",
-      email: "madhav.gupta@example.com",
+      email: "madhav.gupta@gmail.com",
       role: "User",
       permission: "Read",
       createdDate: "2024-05-05",
@@ -241,7 +329,7 @@ function Dashboard() {
     {
       id: 6,
       username: "Vishal Singh",
-      email: "vishal.singh@example.com",
+      email: "vishal.singh@gmail.com",
       role: "Moderator",
       permission: "Read, Delete",
       createdDate: "2024-06-18",
@@ -251,7 +339,7 @@ function Dashboard() {
     {
       id: 7,
       username: "Anant Rao",
-      email: "anantrao@example.com",
+      email: "anantrao@gmail.com",
       role: "Manager",
       permission: "Read, Write",
       createdDate: "2024-07-10",
@@ -261,7 +349,7 @@ function Dashboard() {
     {
       id: 8,
       username: "Sanya Mehta",
-      email: "sanyamehta@example.com",
+      email: "sanyamehta@gmail.com",
       role: "Admin",
       permission: "Read, Write, Delete",
       createdDate: "2024-08-25",
@@ -281,7 +369,7 @@ function Dashboard() {
     {
       id: 10,
       username: "Kabir Joshi",
-      email: "kabirjoshi@example.com",
+      email: "kabirjoshi@gmail.com",
       role: "Admin",
       permission: "Read, Write, Delete",
       createdDate: "2024-10-01",
@@ -291,7 +379,7 @@ function Dashboard() {
     {
       id: 11,
       username: "Nikhil Kapoor",
-      email: "nikhilkapoor@example.com",
+      email: "nikhilkapoor@gmail.com",
       role: "Admin",
       permission: "Read, Write, Delete",
       createdDate: "2024-01-05",
@@ -301,7 +389,7 @@ function Dashboard() {
     {
       id: 12,
       username: "Karan Soni",
-      email: "karansoni@example.com",
+      email: "karansoni@gmail.com",
       role: "Manager",
       permission: "Read, Write",
       createdDate: "2024-02-12",
@@ -311,7 +399,7 @@ function Dashboard() {
     {
       id: 13,
       username: "Arvind Mehra",
-      email: "arvindmehra@example.com",
+      email: "arvindmehra@gmail.com",
       role: "Moderator",
       permission: "Read, Delete",
       createdDate: "2024-03-03",
@@ -321,7 +409,7 @@ function Dashboard() {
     {
       id: 14,
       username: "Raghav Bansal",
-      email: "raghavbansal@example.com",
+      email: "raghavbansal@gmail.com",
       role: "User",
       permission: "Read",
       createdDate: "2024-04-18",
@@ -331,7 +419,7 @@ function Dashboard() {
     {
       id: 15,
       username: "Aditya Chauhan",
-      email: "adityachauhan@example.com",
+      email: "adityachauhan@gmail.com",
       role: "Manager",
       permission: "Read, Write",
       createdDate: "2024-05-25",
@@ -351,7 +439,7 @@ function Dashboard() {
     {
       id: 17,
       username: "Neha Agarwal",
-      email: "nehaagarwal@example.com",
+      email: "nehaagarwal@gmail.com",
       role: "Admin",
       permission: "Read, Write, Delete",
       createdDate: "2024-07-11",
@@ -361,7 +449,7 @@ function Dashboard() {
     {
       id: 18,
       username: "Madhavi Reddy",
-      email: "madhavireddy@example.com",
+      email: "madhavireddy@gmail.com",
       role: "User",
       permission: "Read",
       createdDate: "2024-08-23",
@@ -371,7 +459,7 @@ function Dashboard() {
     {
       id: 19,
       username: "Rihan Kumar",
-      email: "rihankumar@example.com",
+      email: "rihankumar@gmail.com",
       role: "User",
       permission: "Read",
       createdDate: "2024-03-10",
@@ -381,7 +469,7 @@ function Dashboard() {
     {
       id: 20,
       username: "Sayam Patel",
-      email: "sayampatel@example.com",
+      email: "sayampatel@gmail.com",
       role: "Moderator",
       permission: "Read, Delete",
       createdDate: "2024-04-20",
@@ -408,89 +496,143 @@ function Dashboard() {
   };
 
   return (
-    <DashboardContainer>
-      <SidebarContainer>
-        <Sidebar />
-      </SidebarContainer>
-      <MainContent $isDarkMode={isDarkMode}>
-        <Header>Dashboard</Header>
-        <Separator />
-        <TopBar>
-          <SectionHeading>User List</SectionHeading>
-          <SearchContainer $isDarkMode={isDarkMode}>
-            <IoSearchOutline />
-            <input
-              type="text"
-              placeholder="Search User..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </SearchContainer>
-        </TopBar>
+    <>
+      <DashboardContainer>
+        <SidebarContainer>
+          <Sidebar />
+        </SidebarContainer>
+        <MainContent $isDarkMode={isDarkMode}>
+          <Header  $isDarkMode={isDarkMode}>Dashboard</Header>
+          <Separator />
+          <TopBar>
+            <SectionHeading  $isDarkMode={isDarkMode}>User List</SectionHeading>
+            <SearchContainer $isDarkMode={isDarkMode}>
+              <IoSearchOutline />
+              <input
+                type="text"
+                placeholder="Search User..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </SearchContainer>
+          </TopBar>
 
-        {/* Show error message if no users match */}
-        {filteredUsers.length === 0 && searchQuery !== "" && (
-          <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
-        )}
+          {/* Show error message if no users match */}
+          {filteredUsers.length === 0 && searchQuery !== "" && (
+            <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
+          )}
 
-        {filteredUsers.length > 0 && (
-          <TableContainer $isDarkMode={isDarkMode}>
-            <Table>
-              <TableHead>
-                <tr>
-                  <th>Id</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Permission</th>
-                  <th>Created Date</th>
-                  <th>Status</th>
-                </tr>
-              </TableHead>
-              <TableBody $isDarkMode={isDarkMode}>
-                {currentUsers.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>
-                      <AvatarUsernameWrapper>
-                        <Avatar src={user.imageUrl} />
-                        <span>{user.username}</span>
-                      </AvatarUsernameWrapper>
-                    </td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    <td>{user.permission}</td>
-                    <td>{user.createdDate}</td>
-                    <td>
-                      <Status
-                        className={
-                          user.status === "Active" ? "active" : "inactive"
-                        }
-                      >
-                        {user.status}
-                      </Status>
-                    </td>
+          {filteredUsers.length > 0 && (
+            <TableContainer $isDarkMode={isDarkMode}>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Permission</th>
+                    <th>Created Date</th>
+                    <th>Status</th>
                   </tr>
-                ))}
-              </TableBody>
-            </Table>
-            <PaginationWrapper>
-              {Array.from(
-                { length: Math.ceil(filteredUsers.length / usersPerPage) },
-                (_, index) => (
-                  <PageButton
-                    key={index + 1}
-                    onClick={() => handlePageClick(index + 1)}
-                  >
-                    {index + 1}
-                  </PageButton>
-                )
-              )}
-            </PaginationWrapper>
-          </TableContainer>
-        )}
-      </MainContent>
-    </DashboardContainer>
+                </TableHead>
+                <TableBody $isDarkMode={isDarkMode}>
+                  {currentUsers.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>
+                        <AvatarUsernameWrapper>
+                          <Avatar src={user.imageUrl} />
+                          <span>{user.username}</span>
+                        </AvatarUsernameWrapper>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{user.role}</td>
+                      <td>{user.permission}</td>
+                      <td>{user.createdDate}</td>
+                      <td>
+                        <Status
+                          className={
+                            user.status === "Active" ? "active" : "inactive"
+                          }
+                        >
+                          {user.status}
+                        </Status>
+                      </td>
+                    </tr>
+                  ))}
+                </TableBody>
+              </Table>
+              <PaginationWrapper>
+                {Array.from(
+                  { length: Math.ceil(filteredUsers.length / usersPerPage) },
+                  (_, index) => (
+                    <PageButton
+                      key={index + 1}
+                      onClick={() => handlePageClick(index + 1)}
+                    >
+                      {index + 1}
+                    </PageButton>
+                  )
+                )}
+              </PaginationWrapper>
+            </TableContainer>
+          )}
+        </MainContent>
+      </DashboardContainer>
+
+      <SmallScreenDashboard  $isDarkMode={isDarkMode}>
+        <Header  $isDarkMode={isDarkMode}>Dashboard</Header>
+        <Separator />
+
+        <SectionHeading  $isDarkMode={isDarkMode}>User List</SectionHeading>
+        <SearchContainer $isDarkMode={isDarkMode}>
+          <IoSearchOutline />
+          <input
+            type="text"
+            placeholder="Search User..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </SearchContainer>
+
+        {currentUsers.map((user) => (
+          <UserCard key={user.id} $isDarkMode={isDarkMode}>
+            <UserMeta $isDarkMode={isDarkMode}>
+              <UserAvatar src={user.imageUrl} />
+              <MetaData>
+                <CardUsername $isDarkMode={isDarkMode}>{user.username}</CardUsername>
+                <CardEmail $isDarkMode={isDarkMode}>{user.email}</CardEmail>
+              </MetaData>
+            </UserMeta>
+            <CardContent>
+              <CardLowerWrap>
+                <CardRole $isDarkMode={isDarkMode}>{user.role}</CardRole>
+                <Status
+                  className={user.status === "Active" ? "active" : "inactive"}
+                >
+                  {user.status}
+                </Status>
+              </CardLowerWrap>
+            </CardContent>
+          </UserCard>
+        ))}
+        <PaginationWrapper>
+          {Array.from(
+            { length: Math.ceil(filteredUsers.length / usersPerPage) },
+            (_, index) => (
+              <PageButton
+                key={index + 1}
+                onClick={() => handlePageClick(index + 1)}
+              >
+                {index + 1}
+              </PageButton>
+            )
+          )}
+        </PaginationWrapper>
+        
+      </SmallScreenDashboard>
+    </>
   );
 }
 

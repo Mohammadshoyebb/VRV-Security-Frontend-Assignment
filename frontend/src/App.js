@@ -9,12 +9,10 @@ import Footer from "./components/common/Footer";
 import Dashboard from "./components/adminpanel/Dashboard";
 import ManageUsers from "./components/adminpanel/manageusers/ManageUsers";
 import ManageRole from "./components/adminpanel/manageroles/ManageRole";
-// import ManagePermission from "./components/adminpanel/managepermission/ManagePermission";
+import Permission from "./components/adminpanel/managepermission/Permission";
 
 // Import Theme Context
 import { ThemeProvider } from "./components/context/ThemeContext";
-import Permission from "./components/adminpanel/managepermission/Permission";
-// import ManagePermission from "./components/adminpanel/managepermission/ManagePermission";
 
 function App() {
   return (
@@ -29,16 +27,14 @@ function App() {
             <Routes>
               {/* AdminControl Routes */}
               <Route exact path="/" element={<Dashboard />} />
-              <Route exact path="/manageuser" element={<ManageUsers/>}/>
-              <Route exact path="/managerole" element={<ManageRole/>}/>
-              <Route exact path="/managepermission" element={<Permission/>}/>
-
-              
+              <Route exact path="/manageuser" element={<ManageUsers />} />
+              <Route exact path="/managerole" element={<ManageRole />} />
+              <Route exact path="/managepermission" element={<Permission />} />
             </Routes>
           </div>
 
           {/* Footer Section */}
-          <Footer/>
+          <Footer />
         </Router>
       </div>
     </ThemeProvider>

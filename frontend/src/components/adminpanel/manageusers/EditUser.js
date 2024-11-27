@@ -24,6 +24,7 @@ const ModalContainer = styled.div`
   width: 90%;
   max-width: 600px;
   padding: 20px;
+  margin: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
 `;
@@ -94,7 +95,7 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  width: calc(100% - 40px); 
+  width: calc(100% - 40px);
   margin: 0 auto;
   font-size: 15px;
   font-weight: bold;
@@ -129,11 +130,13 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
   const [username, setUsername] = useState(userData?.username || "");
   const [email, setEmail] = useState(userData?.email || "");
   const [role, setRole] = useState(userData?.role || "");
-  const [permissions, setPermissions] = useState(userData?.permissions || {
-    read: false,
-    write: false,
-    delete: false,
-  });
+  const [permissions, setPermissions] = useState(
+    userData?.permissions || {
+      read: false,
+      write: false,
+      delete: false,
+    }
+  );
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -141,17 +144,18 @@ function EditUser({ isOpen, onClose, userData, onSave }) {
       setUsername(userData.username || "");
       setEmail(userData.email || "");
       setRole(userData.role || "");
-      setPermissions(userData.permissions || { read: false, write: false, delete: false });
+      setPermissions(
+        userData.permissions || { read: false, write: false, delete: false }
+      );
     }
   }, [userData]);
-  
 
   const handlePermissionChange = (e) => {
     const { name, checked } = e.target;
     setPermissions((prev) => ({ ...prev, [name]: checked }));
   };
 
-//Validation Rules
+  //Validation Rules
   const validateFields = () => {
     if (!username.trim()) {
       setError("Name cannot be empty.");

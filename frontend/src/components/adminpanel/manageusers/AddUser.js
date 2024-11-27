@@ -22,6 +22,8 @@ const ModalContainer = styled.div`
   border-radius: 10px;
   width: 90%;
   max-width: 600px;
+  max-height:500px;
+  margin:10px;
   padding: 20px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;

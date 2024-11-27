@@ -60,25 +60,25 @@ function Sidebar() {
      
       <Menu>
         <MenuItem $isDarkMode={isDarkMode}>
-          <StyledLink to="/">
+          <StyledLink  to="/">
             <MdDashboard />
             Dashboard
           </StyledLink>
         </MenuItem>
         <MenuItem $isDarkMode={isDarkMode}>
-          <StyledLink to="/manageuser">
+          <StyledLink  to="/manageuser">
             <FaUsers />
             Users
           </StyledLink>
         </MenuItem>
         <MenuItem $isDarkMode={isDarkMode}>
-          <StyledLink to="/managerole">
+          <StyledLink  to="/managerole">
             <FaUserCog />
             Roles
           </StyledLink>
         </MenuItem>
         <MenuItem $isDarkMode={isDarkMode}>
-          <StyledLink to="/managepermission">
+          <StyledLink  to="/managepermission">
             <FaUserLock />
             Permissions
           </StyledLink>

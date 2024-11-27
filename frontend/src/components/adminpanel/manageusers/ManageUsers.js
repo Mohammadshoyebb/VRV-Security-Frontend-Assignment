@@ -196,6 +196,7 @@ const AddIcon = styled(IoMdAdd)`
 const AddNewUserWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -257,6 +258,98 @@ const ErrorMessage = styled.div`
   color: #dc3545;
   background-color: #f8d7da;
   border-radius: 5px;
+`;
+
+const SmallScreenContainer = styled.div`
+  @media (max-width: 768px) {
+    min-height: 77.5vh;
+    display: block;
+    padding: 20px;
+    color: ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
+    background-color: ${(props) => (props.$isDarkMode ? "#1a1a1a" : "#f9f9f9")};
+  }
+  display: none;
+`;
+
+const UserCard = styled.div`
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+`;
+
+const UserMeta = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const MetaData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 5px;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const UserAvatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const SmallScreenCardContainer = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+  }
+`;
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 15px;
+`;
+
+const CardUsername = styled.h3`
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const CardEmail = styled.p`
+  font-size: 14px;
+  margin: 0;
+  color: ${(props) => (props.$isDarkMode ? "#eaecee" : "#555")};
+`;
+
+const CardLowerWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: ${(props) => (props.className === "active" ? "#28a745" : "#dc3545")};
+`;
+
+const Status = styled.span`
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: ${(props) =>
+    props.className === "active" ? "#28a745" : "#dc3545"};
+  color: #fff;
 `;
 
 const ManageUsers = () => {
@@ -399,152 +492,268 @@ const ManageUsers = () => {
   };
 
   return (
-    <ManageUsersContainer>
-      <SidebarContainer>
-        <Sidebar />
-      </SidebarContainer>
-      <MainContent $isDarkMode={isDarkMode}>
-        <Header>Manage Users</Header>
-        <Separator />
-        <TopBar>
-          <SectionHeading>User List</SectionHeading>
-          <TopBarRight>
-            <SearchContainer $isDarkMode={isDarkMode}>
-              <IoSearchOutline />
-              <input
-                type="text"
-                placeholder="Search User..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </SearchContainer>
-            <button
-              onClick={() => setModalState({ isOpen: true, isEditMode: false })}
-              style={{
-                backgroundColor: "#28a745",
-                color: "white",
-                padding: "6px 12px",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              <AddNewUserWrapper>
-                <AddIcon />
-                Add New User
-              </AddNewUserWrapper>
-            </button>
-          </TopBarRight>
-        </TopBar>
-
-        {filteredUsers.length === 0 && searchQuery !== "" ? (
-          <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
-        ) : (
-          <TableContainer $isDarkMode={isDarkMode}>
-            <Table>
-              <TableHead>
-                <tr>
-                  <th>Id</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </TableHead>
-              <TableBody $isDarkMode={isDarkMode}>
-                {currentUsers.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>
-                      <AvatarUsernameWrapper>
-                        <Avatar src={user.imageUrl} alt="avatar" />
-                        {user.username}
-                      </AvatarUsernameWrapper>
-                    </td>
-                    <td>{user.email}</td>
-                    <td>
-                      <StatusToggleButton
-                        $status={user.status}
-                        onClick={() => handleToggleStatus(user.id)}
-                      >
-                        {user.status === "Active" ? (
-                          <>
-                            <ActiveIconContainer>
-                              <RiToggleFill />
-                            </ActiveIconContainer>
-                            Active
-                          </>
-                        ) : (
-                          <>
-                            <InactiveIconContainer>
-                              <RiToggleLine />
-                            </InactiveIconContainer>
-                            Inactive
-                          </>
-                        )}
-                      </StatusToggleButton>
-                    </td>
-                    <td>
-                      <ActionButton onClick={() => handleEditUser(user)}>
-                        <ActionIcon>
-                          <EditIcon />
-                          Edit
-                        </ActionIcon>
-                      </ActionButton>
-                      <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                        <ActionIcon>
-                          <DeleteIcon />
-                          Delete
-                        </ActionIcon>
-                      </DeleteButton>
-                    </td>
-                  </tr>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-        {/* Pagination Section */}
-        <PaginationWrapper>
-          {Array.from(
-            { length: Math.ceil(filteredUsers.length / usersPerPage) },
-            (_, index) => (
-              <PageButton
-                key={index + 1}
-                onClick={() => handlePageClick(index + 1)}
+    <>
+      <ManageUsersContainer>
+        <SidebarContainer>
+          <Sidebar />
+        </SidebarContainer>
+        <MainContent $isDarkMode={isDarkMode}>
+          <Header>Manage Users</Header>
+          <Separator />
+          <TopBar>
+            <SectionHeading>User List</SectionHeading>
+            <TopBarRight>
+              <SearchContainer $isDarkMode={isDarkMode}>
+                <IoSearchOutline />
+                <input
+                  type="text"
+                  placeholder="Search User..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </SearchContainer>
+              <button
+                onClick={() =>
+                  setModalState({ isOpen: true, isEditMode: false })
+                }
                 style={{
-                  backgroundColor:
-                    currentPage === index + 1 ? "#1e6e99" : "#2e86c1",
+                  backgroundColor: "#28a745",
+                  color: "white",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
                 }}
               >
-                {index + 1}
-              </PageButton>
-            )
-          )}
-        </PaginationWrapper>
+                <AddNewUserWrapper>
+                  <AddIcon />
+                  Add New User
+                </AddNewUserWrapper>
+              </button>
+            </TopBarRight>
+          </TopBar>
 
-        {/* Modals */}
-        {modalState.isEditMode ? (
-          <EditUserModal
-            isOpen={modalState.isOpen}
-            onClose={() =>
-              setModalState({
-                isOpen: false,
-                isEditMode: false,
-                userToEdit: null,
-              })
-            }
-            userData={modalState.userToEdit}
-            onSave={handleUpdateUser}
-          />
-        ) : (
-          <AddUserModal
-            isOpen={modalState.isOpen}
-            onClose={() => setModalState({ isOpen: false })}
-            onSave={handleAddUser}
-          />
-        )}
-      </MainContent>
-    </ManageUsersContainer>
+          {filteredUsers.length === 0 && searchQuery !== "" ? (
+            <ErrorMessage>No users found matching "{searchQuery}"</ErrorMessage>
+          ) : (
+            <TableContainer $isDarkMode={isDarkMode}>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </TableHead>
+                <TableBody $isDarkMode={isDarkMode}>
+                  {currentUsers.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>
+                        <AvatarUsernameWrapper>
+                          <Avatar src={user.imageUrl} alt="avatar" />
+                          {user.username}
+                        </AvatarUsernameWrapper>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>
+                        <StatusToggleButton
+                          $status={user.status}
+                          onClick={() => handleToggleStatus(user.id)}
+                        >
+                          {user.status === "Active" ? (
+                            <>
+                              <ActiveIconContainer>
+                                <RiToggleFill />
+                              </ActiveIconContainer>
+                              Active
+                            </>
+                          ) : (
+                            <>
+                              <InactiveIconContainer>
+                                <RiToggleLine />
+                              </InactiveIconContainer>
+                              Inactive
+                            </>
+                          )}
+                        </StatusToggleButton>
+                      </td>
+                      <td>
+                        <ActionButton onClick={() => handleEditUser(user)}>
+                          <ActionIcon>
+                            <EditIcon />
+                            Edit
+                          </ActionIcon>
+                        </ActionButton>
+                        <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                          <ActionIcon>
+                            <DeleteIcon />
+                            Delete
+                          </ActionIcon>
+                        </DeleteButton>
+                      </td>
+                    </tr>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+
+          {/* Pagination Section */}
+          <PaginationWrapper>
+            {Array.from(
+              { length: Math.ceil(filteredUsers.length / usersPerPage) },
+              (_, index) => (
+                <PageButton
+                  key={index + 1}
+                  onClick={() => handlePageClick(index + 1)}
+                  style={{
+                    backgroundColor:
+                      currentPage === index + 1 ? "#1e6e99" : "#2e86c1",
+                  }}
+                >
+                  {index + 1}
+                </PageButton>
+              )
+            )}
+          </PaginationWrapper>
+
+          {/* Modals */}
+          {modalState.isEditMode ? (
+            <EditUserModal
+              isOpen={modalState.isOpen}
+              onClose={() =>
+                setModalState({
+                  isOpen: false,
+                  isEditMode: false,
+                  userToEdit: null,
+                })
+              }
+              userData={modalState.userToEdit}
+              onSave={handleUpdateUser}
+            />
+          ) : (
+            <AddUserModal
+              isOpen={modalState.isOpen}
+              onClose={() => setModalState({ isOpen: false })}
+              onSave={handleAddUser}
+            />
+          )}
+        </MainContent>
+      </ManageUsersContainer>
+
+      {/* Small Screen Layout(users in the form of cards) */}
+
+      <SmallScreenContainer $isDarkMode={isDarkMode}>
+        <SmallScreenCardContainer $isDarkMode={isDarkMode}>
+          <Header $isDarkMode={isDarkMode}>Manage Users</Header>
+
+          <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
+          <SearchContainer $isDarkMode={isDarkMode}>
+            <IoSearchOutline />
+            <input
+              type="text"
+              placeholder="Search User..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </SearchContainer>
+          <button
+            onClick={() => setModalState({ isOpen: true, isEditMode: false })}
+            style={{
+              backgroundColor: "#28a745",
+              color: "white",
+              padding: "6px 12px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginBottom: "1rem",
+            }}
+          >
+            <AddNewUserWrapper>
+              <AddIcon />
+              Add New User
+            </AddNewUserWrapper>
+          </button>
+          {filteredUsers.map((user) => (
+            <UserCard key={user.id} $isDarkMode={isDarkMode}>
+              <UserMeta $isDarkMode={isDarkMode}>
+                <UserAvatar src={user.imageUrl} />
+                <MetaData>
+                  <CardUsername $isDarkMode={isDarkMode}>
+                    {user.username}
+                  </CardUsername>
+                  <CardEmail $isDarkMode={isDarkMode}>{user.email}</CardEmail>
+                </MetaData>
+              </UserMeta>
+              <CardContent>
+                <CardLowerWrap>
+                  <Status
+                    className={user.status === "Active" ? "active" : "inactive"}
+                  >
+                    {user.status}
+                  </Status>
+
+                  <div>
+                    <ActionButton onClick={() => handleEditUser(user)}>
+                      <ActionIcon>
+                        <EditIcon />
+                        Edit
+                      </ActionIcon>
+                    </ActionButton>
+                    <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                      <ActionIcon>
+                        <DeleteIcon />
+                        Delete
+                      </ActionIcon>
+                    </DeleteButton>
+                  </div>
+                </CardLowerWrap>
+              </CardContent>
+            </UserCard>
+          ))}
+          {/* Pagination Section */}
+          <PaginationWrapper>
+            {Array.from(
+              { length: Math.ceil(filteredUsers.length / usersPerPage) },
+              (_, index) => (
+                <PageButton
+                  key={index + 1}
+                  onClick={() => handlePageClick(index + 1)}
+                  style={{
+                    backgroundColor:
+                      currentPage === index + 1 ? "#1e6e99" : "#2e86c1",
+                  }}
+                >
+                  {index + 1}
+                </PageButton>
+              )
+            )}
+          </PaginationWrapper>
+          {/* Modals */}
+          {modalState.isEditMode ? (
+            <EditUserModal
+              isOpen={modalState.isOpen}
+              onClose={() =>
+                setModalState({
+                  isOpen: false,
+                  isEditMode: false,
+                  userToEdit: null,
+                })
+              }
+              userData={modalState.userToEdit}
+              onSave={handleUpdateUser}
+            />
+          ) : (
+            <AddUserModal
+              isOpen={modalState.isOpen}
+              onClose={() => setModalState({ isOpen: false })}
+              onSave={handleAddUser}
+            />
+          )}
+        </SmallScreenCardContainer>
+      </SmallScreenContainer>
+    </>
   );
 };
 
