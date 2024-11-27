@@ -20,7 +20,6 @@ import img8 from "../../../media/avatars/Avatar8.png";
 import img9 from "../../../media/avatars/Avatar9.png";
 import img10 from "../../../media/avatars/Avatar10.png";
 
-
 // Styled Components
 const ManagePermissionsContainer = styled.div`
   display: flex;
@@ -157,6 +156,19 @@ const DeleteButton = styled.button`
   }
 `;
 
+const DeleteIcon = styled(MdOutlineDelete)`
+  font-size: 17px;
+`;
+
+const ActionIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font-size: 14px;
+`;
+
 const AddNewPermissionWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -276,7 +288,7 @@ const Permission = () => {
       email: "kabirjoshi@example.com",
       role: "Admin",
       imageUrl: img10,
-    }
+    },
   ]);
 
   const [permissions, setPermissions] = useState([
@@ -425,7 +437,10 @@ const Permission = () => {
                     </td>
                     <td>
                       <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                        <MdOutlineDelete /> Delete
+                        <ActionIcon>
+                          {" "}
+                          <DeleteIcon /> Delete
+                        </ActionIcon>
                       </DeleteButton>
                     </td>
                   </tr>

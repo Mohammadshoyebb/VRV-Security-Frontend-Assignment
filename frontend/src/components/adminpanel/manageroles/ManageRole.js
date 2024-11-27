@@ -76,8 +76,7 @@ const SearchContainer = styled.div`
   align-items: center;
   border: 1.5px solid ${(props) => (props.$isDarkMode ? "#fff" : "#ddd")};
   border-radius: 5px;
-  background-color: ${(props) =>
-    props.$isDarkMode ? "#000" : "#fff"};
+  background-color: ${(props) => (props.$isDarkMode ? "#000" : "#fff")};
   padding: 5px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -155,6 +154,17 @@ const DeleteButton = styled.button`
     background-color: #c82333;
   }
 `;
+const DeleteIcon = styled(MdOutlineDelete)`
+  font-size: 17px;
+`;
+const ActionIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font-size: 14px;
+`;
 
 const AddNewRoleWrapper = styled.div`
   display: flex;
@@ -202,17 +212,47 @@ const ManageRoles = () => {
   const { isDarkMode } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([
-    { id: 1, username: "Aarav Sharma", email: "aravsharma@example.com", imageUrl: img1, role: "Admin" },
-    { id: 2, username: "Diya Verma", email: "diyaverma@example.com", imageUrl: img2, role: "User" },
-    { id: 3, username: "Ishaan Kumar", email: "ishaankumar@example.com", imageUrl: img3, role: "User" },
-    { id: 4, username: "Rohan Patel", email: "rohanpatel@example.com", imageUrl: img4, role: "Moderator" },
-    { id: 5, username: "Rishi Singh", email: "rishi@example.com", imageUrl: img5, role: "Admin" },
+    {
+      id: 1,
+      username: "Aarav Sharma",
+      email: "aravsharma@example.com",
+      imageUrl: img1,
+      role: "Admin",
+    },
+    {
+      id: 2,
+      username: "Diya Verma",
+      email: "diyaverma@example.com",
+      imageUrl: img2,
+      role: "User",
+    },
+    {
+      id: 3,
+      username: "Ishaan Kumar",
+      email: "ishaankumar@example.com",
+      imageUrl: img3,
+      role: "User",
+    },
+    {
+      id: 4,
+      username: "Rohan Patel",
+      email: "rohanpatel@example.com",
+      imageUrl: img4,
+      role: "Moderator",
+    },
+    {
+      id: 5,
+      username: "Rishi Singh",
+      email: "rishi@example.com",
+      imageUrl: img5,
+      role: "Admin",
+    },
     {
       id: 6,
       username: "Vishal Singh",
       email: "vishal.singh@example.com",
       role: "Moderator",
-      
+
       imageUrl: img6,
     },
     {
@@ -248,7 +288,7 @@ const ManageRoles = () => {
   const [roles, setRoles] = useState([
     { id: 1, roleName: "Admin" },
     { id: 2, roleName: "User" },
-    { id: 3, roleName: "Moderator" }
+    { id: 3, roleName: "Moderator" },
   ]);
 
   const [modalState, setModalState] = useState({
@@ -361,7 +401,9 @@ const ManageRoles = () => {
                     <td>
                       <select
                         value={user.role}
-                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                        onChange={(e) =>
+                          handleRoleChange(user.id, e.target.value)
+                        }
                       >
                         {roles.map((role) => (
                           <option key={role.id} value={role.roleName}>
@@ -372,7 +414,10 @@ const ManageRoles = () => {
                     </td>
                     <td>
                       <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                        <MdOutlineDelete /> Delete
+                        <ActionIcon>
+                          {" "}
+                          <DeleteIcon /> Delete
+                        </ActionIcon>
                       </DeleteButton>
                     </td>
                   </tr>

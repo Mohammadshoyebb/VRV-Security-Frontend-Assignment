@@ -52,21 +52,21 @@ const Header = styled.div`
 const Separator = styled.hr`
   border: none;
   height: 2px;
-  background-color:#808b96;
-  margin-bottom:1.5rem;
+  background-color: #808b96;
+  margin-bottom: 1.5rem;
 `;
 
 const TopBar = styled.div`
   display: flex;
- justify-content:space-between;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 `;
 
-const  TopBarRight=styled.div`
-display:flex;
-align-items:center;
-gap:15px;
+const TopBarRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
 `;
 
 const SectionHeading = styled.h2`
@@ -74,16 +74,12 @@ const SectionHeading = styled.h2`
   margin: 0;
 `;
 
-
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   border: 1.5px solid ${(props) => (props.$isDarkMode ? "#fff" : "#ddd")};
   border-radius: 5px;
-  background-color: ${(props) =>
-    props.$isDarkMode
-      ? "#000"
-      : "#fff"}; 
+  background-color: ${(props) => (props.$isDarkMode ? "#000" : "#fff")};
   padding: 5px 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -156,7 +152,7 @@ const ActionButton = styled.button`
   padding: 6px 12px;
   border-radius: 5px;
   cursor: pointer;
-   margin-top:2px;
+  margin-top: 2px;
   margin-right: 10px;
   &:hover {
     background-color: #e68a00;
@@ -166,7 +162,7 @@ const ActionButton = styled.button`
 const DeleteButton = styled.button`
   background-color: #dc3545;
   color: white;
-  margin-top:2px;
+  margin-top: 2px;
   padding: 6px 12px;
   border-radius: 5px;
   cursor: pointer;
@@ -175,26 +171,26 @@ const DeleteButton = styled.button`
   }
 `;
 
-const ActionIcon=styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content:space-between;
-gap:5px;
-font-size:15px;
+const ActionIcon = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font-size: 14px;
 `;
 
 const EditIcon = styled(FaRegEdit)`
-  font-size: 16px;
+  font-size: 15px;
 `;
 
-const DeleteIcon=styled(MdOutlineDelete)`
+const DeleteIcon = styled(MdOutlineDelete)`
   font-size: 16px;
 `;
 
 const AddIcon = styled(IoMdAdd)`
   font-size: 16px;
-  margin-right: 6px; 
+  margin-right: 6px;
 `;
 
 const AddNewUserWrapper = styled.div`
@@ -203,12 +199,10 @@ const AddNewUserWrapper = styled.div`
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease; 
-  
+  transition: background-color 0.3s ease;
+
   &:hover {
- 
     padding: 1px;
- 
   }
 `;
 
@@ -218,23 +212,45 @@ const StatusToggleButton = styled.div`
   cursor: pointer;
   font-size: 15px;
   gap: 10px;
-  ${props => props.status && `
+  ${(props) =>
+    props.status &&
+    `
     color: ${props.status === "Active" ? "#28a745" : "#dc3545"};
   `}
 `;
 
-const ActiveIconContainer=styled.div`
-font-size:20px;
-color: #28a745;
+const ActiveIconContainer = styled.div`
+  font-size: 20px;
+  color: #28a745;
 `;
 
-const InactiveIconContainer=styled.div`
-font-size:20px;
-color: #dc3545;
+const InactiveIconContainer = styled.div`
+  font-size: 20px;
+  color: #dc3545;
+`;
+
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const PageButton = styled.button`
+  padding: 10px 15px;
+  background-color: #2e86c1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+
+  &:hover {
+    background-color: #1e6e99;
+  }
 `;
 
 const ErrorMessage = styled.div`
-width:100%;
+  width: 100%;
   text-align: center;
   padding: 20px;
   font-size: 16px;
@@ -247,10 +263,62 @@ const ManageUsers = () => {
   const { isDarkMode } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([
-    { id: 1, username: "Aarav Sharma", email: "aravsharma@example.com", imageUrl: img1, status: "Active" },
-    { id: 2, username: "Diya Verma", email: "diyaverma@example.com", imageUrl: img2, status: "Inactive" },
-    { id: 3, username: "Ishaan Kumar", email: "ishaankumar@example.com", imageUrl: img3, status: "Active" },
-    { id: 4, username: "Rohan Patel", email: "rohanpatel@example.com", imageUrl: img4, status: "Inactive" },
+    {
+      id: 1,
+      username: "Aarav Sharma",
+      email: "aravsharma@example.com",
+      imageUrl: img1,
+      status: "Active",
+    },
+    {
+      id: 2,
+      username: "Diya Verma",
+      email: "diyaverma@example.com",
+      imageUrl: img2,
+      status: "Inactive",
+    },
+    {
+      id: 3,
+      username: "Ishaan Kumar",
+      email: "ishaankumar@example.com",
+      imageUrl: img3,
+      status: "Active",
+    },
+    {
+      id: 4,
+      username: "Rohan Patel",
+      email: "rohanpatel@example.com",
+      imageUrl: img4,
+      status: "Inactive",
+    },
+    {
+      id: 5,
+      username: "Aarav Sharma",
+      email: "aravsharma@example.com",
+      imageUrl: img1,
+      status: "Active",
+    },
+    {
+      id: 6,
+      username: "Diya Verma",
+      email: "diyaverma@example.com",
+      imageUrl: img2,
+      status: "Inactive",
+    },
+    {
+      id: 7,
+      username: "Ishaan Kumar",
+      email: "ishaankumar@example.com",
+      imageUrl: img3,
+      status: "Active",
+    },
+    {
+      id: 8,
+      username: "Rohan Patel",
+      email: "rohanpatel@example.com",
+      imageUrl: img4,
+      status: "Inactive",
+    },
   ]);
   const [modalState, setModalState] = useState({
     isOpen: false,
@@ -285,7 +353,10 @@ const ManageUsers = () => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
         user.id === id
-          ? { ...user, status: user.status === "Active" ? "Inactive" : "Active" }
+          ? {
+              ...user,
+              status: user.status === "Active" ? "Inactive" : "Active",
+            }
           : user
       )
     );
@@ -299,9 +370,7 @@ const ManageUsers = () => {
   // Update an existing user
   const handleUpdateUser = (updatedUser) => {
     setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user
-      )
+      prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
     );
     setModalState({ isOpen: false, isEditMode: false, userToEdit: null });
   };
@@ -311,6 +380,22 @@ const ManageUsers = () => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
     }
+  };
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 5;
+
+  const startId = (currentPage - 1) * usersPerPage + 1;
+  const endId = currentPage * usersPerPage;
+
+  // Filter users based on the calculated ID range
+  const currentUsers = filteredUsers.filter(
+    (user) => user.id >= startId && user.id <= endId
+  );
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -366,7 +451,7 @@ const ManageUsers = () => {
                 </tr>
               </TableHead>
               <TableBody $isDarkMode={isDarkMode}>
-                {filteredUsers.map((user) => (
+                {currentUsers.map((user) => (
                   <tr key={user.id}>
                     <td>{user.id}</td>
                     <td>
@@ -418,16 +503,39 @@ const ManageUsers = () => {
             </Table>
           </TableContainer>
         )}
+        {/* Pagination Section */}
+        <PaginationWrapper>
+          {Array.from(
+            { length: Math.ceil(filteredUsers.length / usersPerPage) },
+            (_, index) => (
+              <PageButton
+                key={index + 1}
+                onClick={() => handlePageClick(index + 1)}
+                style={{
+                  backgroundColor:
+                    currentPage === index + 1 ? "#1e6e99" : "#2e86c1",
+                }}
+              >
+                {index + 1}
+              </PageButton>
+            )
+          )}
+        </PaginationWrapper>
 
         {/* Modals */}
         {modalState.isEditMode ? (
-         <EditUserModal
-         isOpen={modalState.isOpen}
-         onClose={() => setModalState({ isOpen: false, isEditMode: false, userToEdit: null })}
-         userData={modalState.userToEdit} 
-         onSave={handleUpdateUser} 
-       />
-       
+          <EditUserModal
+            isOpen={modalState.isOpen}
+            onClose={() =>
+              setModalState({
+                isOpen: false,
+                isEditMode: false,
+                userToEdit: null,
+              })
+            }
+            userData={modalState.userToEdit}
+            onSave={handleUpdateUser}
+          />
         ) : (
           <AddUserModal
             isOpen={modalState.isOpen}
