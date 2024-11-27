@@ -536,6 +536,8 @@ const ManageRoles = () => {
         </MainContent>
       </ManageRolesContainer>
 
+      {/* SmallScreen Layout */}
+      
       <SmallScreenContainer $isDarkMode={isDarkMode}>
         <SmallScreenCardContainer $isDarkMode={isDarkMode}>
           <Header $isDarkMode={isDarkMode}>Manage Roles</Header>

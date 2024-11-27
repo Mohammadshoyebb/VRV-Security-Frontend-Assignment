@@ -25,6 +25,9 @@ const ManagePermissionsContainer = styled.div`
   display: flex;
   height: 80vh;
   margin-bottom: 1rem;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const SidebarContainer = styled.div`
@@ -172,6 +175,7 @@ const ActionIcon = styled.div`
 const AddNewPermissionWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -213,6 +217,91 @@ const PaginationButton = styled.button`
   &:hover {
     background-color: ${(props) => (props.$isDarkMode ? "#777" : "#bbb")};
   }
+`;
+
+const SmallScreenContainer = styled.div`
+  @media (max-width: 768px) {
+    min-height: 77.5vh;
+    display: block;
+    padding: 20px;
+    color: ${(props) => (props.$isDarkMode ? "#ccc" : "#333")};
+    background-color: ${(props) => (props.$isDarkMode ? "#1a1a1a" : "#f9f9f9")};
+  }
+  display: none;
+`;
+
+const UserCard = styled.div`
+  background-color: ${(props) => (props.$isDarkMode ? "#333" : "#fff")};
+  border-radius: 12px;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+`;
+
+const UserMeta = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+const MetaData = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 5px;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const UserAvatar = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+const SmallScreenCardContainer = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+  }
+`;
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 15px;
+`;
+
+const CardUsername = styled.h3`
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+  color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
+`;
+
+const CardEmail = styled.p`
+  font-size: 14px;
+  margin: 0;
+  color: ${(props) => (props.$isDarkMode ? "#eaecee" : "#555")};
+`;
+
+const CardRole = styled.p`
+  margin-top: 0;
+  font-size: 15px;
+  color: ${(props) => (props.$isDarkMode ? "#f2f3f4 " : "#555")};
+`;
+const CardLowerWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `;
 
 const Permission = () => {
@@ -343,149 +432,308 @@ const Permission = () => {
     setPermissions((prevPermissions) => [...prevPermissions, newPermission]);
     setModalState({ isOpen: false });
   };
+  const handleDeletePermission = (userId, permission) => {
+    console.log("Deleting permission:", permission, "for user:", userId);
 
-  const handleDeleteUser = (userId) => {
-    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+    setUsers((prevUsers) => {
+      // Update users' permissions
+      const updatedUsers = prevUsers.map((user) =>
+        user.id === userId
+          ? {
+              ...user,
+              permissions: (user.permissions || []).filter(
+                (perm) => perm !== permission
+              ),
+            }
+          : user
+      );
+
+      // Log to check if the state has been updated correctly
+      console.log("Updated users:", updatedUsers);
+
+      return updatedUsers;
+    });
   };
 
   return (
-    <ManagePermissionsContainer>
-      <SidebarContainer>
-        <Sidebar />
-      </SidebarContainer>
-      <MainContent $isDarkMode={isDarkMode}>
-        <Header>Manage Permissions</Header>
-        <Separator />
-        <TopBar>
-          <SectionHeading>Users & Permissions List</SectionHeading>
-          <TopBarRight>
-            <SearchContainer $isDarkMode={isDarkMode}>
-              <IoSearchOutline />
-              <input
-                type="text"
-                placeholder="Search User..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </SearchContainer>
-            <button
-              onClick={() => setModalState({ isOpen: true })}
-              style={{
-                backgroundColor: "#28a745",
-                color: "white",
-                padding: "6px 12px",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
-            >
-              <AddNewPermissionWrapper>
-                <IoMdAdd style={{ fontSize: "16px", marginRight: "6px" }} />
-                Add New Permission
-              </AddNewPermissionWrapper>
-            </button>
-          </TopBarRight>
-        </TopBar>
+    <>
+      <ManagePermissionsContainer>
+        <SidebarContainer>
+          <Sidebar />
+        </SidebarContainer>
+        <MainContent $isDarkMode={isDarkMode}>
+          <Header>Manage Permissions</Header>
+          <Separator />
+          <TopBar>
+            <SectionHeading>Users & Permissions List</SectionHeading>
+            <TopBarRight>
+              <SearchContainer $isDarkMode={isDarkMode}>
+                <IoSearchOutline />
+                <input
+                  type="text"
+                  placeholder="Search User..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </SearchContainer>
+              <button
+                onClick={() => setModalState({ isOpen: true })}
+                style={{
+                  backgroundColor: "#28a745",
+                  color: "white",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                <AddNewPermissionWrapper>
+                  <IoMdAdd style={{ fontSize: "16px", marginRight: "6px" }} />
+                  Add New Permission
+                </AddNewPermissionWrapper>
+              </button>
+            </TopBarRight>
+          </TopBar>
 
-        {paginatedUsers.length === 0 ? (
-          <ErrorMessage>No users found</ErrorMessage>
-        ) : (
-          <TableContainer $isDarkMode={isDarkMode}>
-            <Table>
-              <TableHead>
-                <tr>
-                  <th>Id</th>
-                  <th>User</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Permissions</th>
-                  <th>Actions</th>
-                </tr>
-              </TableHead>
-              <TableBody $isDarkMode={isDarkMode}>
-                {paginatedUsers.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>
-                      <AvatarUsernameWrapper>
-                        <Avatar src={user.imageUrl} />
-                        <div>{user.username}</div>
-                      </AvatarUsernameWrapper>
-                    </td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    <td>
-                      <div style={{ display: "flex", gap: "10px" }}>
-                        {permissions.map((perm) => (
-                          <label key={perm.id}>
-                            <input
-                              type="checkbox"
-                              checked={user.permissions?.includes(
-                                perm.permission
-                              )}
-                              onChange={(e) =>
-                                handlePermissionChange(
-                                  user.id,
-                                  perm.permission,
-                                  e.target.checked
-                                )
-                              }
-                            />
-                            {perm.permission}
-                          </label>
-                        ))}
-                      </div>
-                    </td>
-                    <td>
-                      <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                        <ActionIcon>
-                          {" "}
-                          <DeleteIcon /> Delete
-                        </ActionIcon>
-                      </DeleteButton>
-                    </td>
+          {paginatedUsers.length === 0 ? (
+            <ErrorMessage>No users found</ErrorMessage>
+          ) : (
+            <TableContainer $isDarkMode={isDarkMode}>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <th>Id</th>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Permissions</th>
                   </tr>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+                </TableHead>
+                <TableBody $isDarkMode={isDarkMode}>
+                  {paginatedUsers.map((user) => (
+                    <tr key={user.id}>
+                      <td>{user.id}</td>
+                      <td>
+                        <AvatarUsernameWrapper>
+                          <Avatar src={user.imageUrl} />
+                          <div>{user.username}</div>
+                        </AvatarUsernameWrapper>
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{user.role}</td>
+                      <td>
+                        <div style={{ display: "flex", gap: "10px" }}>
+                          {permissions.map((perm) => (
+                            <label key={perm.id}>
+                              <input
+                                type="checkbox"
+                                checked={
+                                  user.permissions?.includes(perm.permission) ||
+                                  false
+                                }
+                                onChange={(e) =>
+                                  handlePermissionChange(
+                                    user.id,
+                                    perm.permission,
+                                    e.target.checked
+                                  )
+                                }
+                              />
+                              {perm.permission}
+                              <button
+                                onClick={() =>
+                                  handleDeletePermission(
+                                    user.id,
+                                    perm.permission
+                                  )
+                                }
+                                style={{
+                                  backgroundColor: "#dc3545",
+                                  color: "white",
+                                  padding: "4px 8px",
+                                  borderRadius: "5px",
+                                  cursor: "pointer",
+                                  marginLeft: "10px",
+                                  marginRight: "15px",
+                                }}
+                              >
+                                <DeleteIcon />
+                              </button>
+                            </label>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
 
-        <PaginationControls>
-          <PaginationButton
-            $isDarkMode={isDarkMode}
-            disabled={currentPage === 1}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            Previous
-          </PaginationButton>
-          {Array.from({ length: totalPages }, (_, i) => (
+          <PaginationControls>
             <PaginationButton
-              key={i}
               $isDarkMode={isDarkMode}
-              $isCurrent={currentPage === i + 1}
-              onClick={() => handlePageChange(i + 1)}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
             >
-              {i + 1}
+              Previous
             </PaginationButton>
-          ))}
-          <PaginationButton
-            $isDarkMode={isDarkMode}
-            disabled={currentPage === totalPages}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            Next
-          </PaginationButton>
-        </PaginationControls>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationButton
+                key={i}
+                $isDarkMode={isDarkMode}
+                $isCurrent={currentPage === i + 1}
+                onClick={() => handlePageChange(i + 1)}
+              >
+                {i + 1}
+              </PaginationButton>
+            ))}
+            <PaginationButton
+              $isDarkMode={isDarkMode}
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              Next
+            </PaginationButton>
+          </PaginationControls>
 
-        {modalState.isOpen && (
-          <AddPermissionModal
-            isOpen={modalState.isOpen}
-            onClose={() => setModalState({ isOpen: false })}
-            onSave={handleAddPermission}
-          />
-        )}
-      </MainContent>
-    </ManagePermissionsContainer>
+          {modalState.isOpen && (
+            <AddPermissionModal
+              isOpen={modalState.isOpen}
+              onClose={() => setModalState({ isOpen: false })}
+              onSave={handleAddPermission}
+            />
+          )}
+        </MainContent>
+      </ManagePermissionsContainer>
+
+      {/* SmallScreen Layout  */}
+
+      <SmallScreenContainer $isDarkMode={isDarkMode}>
+        <SmallScreenCardContainer $isDarkMode={isDarkMode}>
+          <Header $isDarkMode={isDarkMode}>Manage Permissions</Header>
+
+          <SectionHeading $isDarkMode={isDarkMode}>User List</SectionHeading>
+          <SearchContainer $isDarkMode={isDarkMode}>
+            <IoSearchOutline />
+            <input
+              type="text"
+              placeholder="Search User..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </SearchContainer>
+          <button
+            onClick={() => setModalState({ isOpen: true, isEditMode: false })}
+            style={{
+              backgroundColor: "#28a745",
+              color: "white",
+              padding: "6px 12px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginBottom: "1rem",
+            }}
+          >
+            <AddNewPermissionWrapper>
+              <IoMdAdd style={{ fontSize: "16px", marginRight: "6px" }} />
+              Add New Permission
+            </AddNewPermissionWrapper>
+          </button>
+          {filteredUsers.map((user) => (
+            <UserCard key={user.id} $isDarkMode={isDarkMode}>
+              <UserMeta $isDarkMode={isDarkMode}>
+                <UserAvatar src={user.imageUrl} />
+                <MetaData>
+                  <CardUsername $isDarkMode={isDarkMode}>
+                    {user.username}
+                  </CardUsername>
+                  <CardEmail $isDarkMode={isDarkMode}>{user.email}</CardEmail>
+                  <CardRole $isDarkMode={isDarkMode}>{user.role}</CardRole>
+                </MetaData>
+              </UserMeta>
+              <CardContent>
+                <CardLowerWrap>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      color: isDarkMode ? "white" : "black",
+                    }}
+                  >
+                    {permissions.map((perm) => (
+                      <label key={perm.id}>
+                        <input
+                          type="checkbox"
+                          checked={
+                            user.permissions?.includes(perm.permission) || false
+                          } // Ensure it's always a boolean (true/false)
+                          onChange={(e) =>
+                            handlePermissionChange(
+                              user.id,
+                              perm.permission,
+                              e.target.checked
+                            )
+                          }
+                        />
+                        {perm.permission}
+                        <button
+                          onClick={() =>
+                            handleDeletePermission(user.id, perm.permission)
+                          } // Delete permission
+                          style={{
+                            backgroundColor: "#dc3545",
+                            color: "white",
+                            padding: "4px 8px",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            margin: "10px",
+                          }}
+                        >
+                          <DeleteIcon />
+                        </button>
+                      </label>
+                    ))}
+                  </div>
+                </CardLowerWrap>
+              </CardContent>
+            </UserCard>
+          ))}
+          <PaginationControls>
+            <PaginationButton
+              $isDarkMode={isDarkMode}
+              disabled={currentPage === 1}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              Previous
+            </PaginationButton>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationButton
+                key={i}
+                $isDarkMode={isDarkMode}
+                $isCurrent={currentPage === i + 1}
+                onClick={() => handlePageChange(i + 1)}
+              >
+                {i + 1}
+              </PaginationButton>
+            ))}
+            <PaginationButton
+              $isDarkMode={isDarkMode}
+              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              Next
+            </PaginationButton>
+          </PaginationControls>
+
+          {modalState.isOpen && (
+            <AddPermissionModal
+              isOpen={modalState.isOpen}
+              onClose={() => setModalState({ isOpen: false })}
+              onSave={handleAddPermission}
+            />
+          )}
+        </SmallScreenCardContainer>
+      </SmallScreenContainer>
+    </>
   );
 };
 
