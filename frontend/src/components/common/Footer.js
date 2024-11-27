@@ -2,18 +2,46 @@ import React from "react";
 import styled from "styled-components";
 import { useTheme } from "../context/ThemeContext";
 
+// Footer container 
 const FooterContainer = styled.footer`
-  height: 5.8vh;
-  padding: 0.5rem;
+  padding: 1rem;
   background-color: ${(props) => (props.$isDarkMode ? "#333" : "#eaecee")};
   color: ${(props) => (props.$isDarkMode ? "#fff" : "#000")};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
   font-weight: bold;
   border-top: 1px solid ${(props) => (props.$isDarkMode ? "#555" : "#ddd")};
-  position:relative;
+  position: relative;
+  text-align: center;
+  font-size: calc(0.8rem + 0.3vw);
+
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    flex-direction: column;
+    text-align: center;
+  }
+`;
+
+// Heart icon styling
+const HeartIcon = styled.span`
+  color: #ffd700;
+  margin:0 0.5rem;
+  padding: 0.5rem 0; 
+`;
+
+
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: row;  
+  align-items: center;
+  justify-content: center;
+
+
+  @media (max-width: 768px) {
+    flex-direction: column; 
+  }
 `;
 
 function Footer() {
@@ -21,9 +49,11 @@ function Footer() {
 
   return (
     <FooterContainer $isDarkMode={isDarkMode}>
-      Designed & Developed with{" "}
-      <span style={{ color: "red", padding: "0.5rem" }}> &hearts; </span> by
-      Janhvi Pandey
+      <TextContainer>
+        <div>Designed & Developed with</div>
+        <HeartIcon>  &hearts;  </HeartIcon>
+        <div>by Janhvi Pandey</div>
+      </TextContainer>
     </FooterContainer>
   );
 }
