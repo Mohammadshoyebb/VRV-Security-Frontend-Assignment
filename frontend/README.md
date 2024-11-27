@@ -12,15 +12,15 @@ The RBAC UI is designed to help administrators manage users, roles, and permissi
 
 ## Features
 
-1. # Dashboard:
+1. ### Dashboard:
    View a comprehensive overview of users and their roles in the system.
-2. # Manage Users:
+2. ### Manage Users:
    Add, edit, and delete users while managing their status (Active/Inactive) and roles.
-3. # Manage Roles:
+3. ### Manage Roles:
    Define new roles, edit existing roles, and delete roles as necessary.
-4. # Manage Permissions:
+4. ### Manage Permissions:
    Assign and modify permissions for roles dynamically.
-5. # Search and Filter:
+5. ### Search and Filter:
    Search for users based on their name or email and filter them as needed.
 
 ## Technologies Used
@@ -47,10 +47,13 @@ cd frontend/
 3. Install Dependencies
    Install all the required dependencies:
 
+bash
+Copy code
 npm install
 
-4. Start the Development Server
-   Run the development server:
+
+4. Start the Application
+   Run the command:
 
 npm start
 
@@ -61,8 +64,10 @@ This will start the app on http://localhost:3000. You should be able to access t
 If you encounter any issues or need further clarification, feel free to contact me at:
 
 Email: shivipandey993@gmail.com
-Portfolio: https://janhvi-portfolio.web.app/
+Portfolio: janhvi-portfolio.web.app
 
-## Thankyou 😊
 
-Thank you for checking out my project! I hope this guide has helped you understand the features and functionality of the RBAC UI. If you have any questions or need further assistance, feel free to reach out. Your feedback and suggestions are always appreciated.🙌
+
+## Thankyou 
+
+Thank you for checking out my project! I hope this guide has helped you understand the features and functionality of the RBAC UI. If you have any questions or need further assistance, feel free to reach out. Your feedback and suggestions are always appreciated.😊
