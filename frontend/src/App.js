@@ -13,7 +13,7 @@ import Permission from "./components/adminpanel/managepermission/Permission";
 
 // Import Theme Context
 import { ThemeProvider } from "./components/context/ThemeContext";
-import SignIn from "./components/authentication/SignIn";
+
 
 function App() {
   return (
@@ -23,16 +23,10 @@ function App() {
           {/* Navbar */}
           <Navbar />
 
-
-          {/* Authentication Routes */}
-
-
-
           {/* Main content container */}
           <div className="container">
             <Routes>
               {/* AdminControl Routes */}
-              <Route exact path="/signin" element={<SignIn />} />
               <Route exact path="/" element={<Dashboard />} />
               <Route exact path="/manageuser" element={<ManageUsers />} />
               <Route exact path="/managerole" element={<ManageRole />} />
